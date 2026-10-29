@@ -57,3 +57,13 @@ Référence : `references/glossy-button.png`, design vu sur le site d'Emil Kowal
 - Désactivé : état propre.
 - Mouvement réduit : plus de déplacement, seulement les changements de couleur.
 - Option `shine` : reflet qui balaie le bouton au survol, désactivé par défaut.
+
+## Changement du 29 octobre 2026 : survol et relief du bouton
+
+Demandé par Yann après la première mise en ligne. Raison : le survol d'origine (léger soulèvement et reflet plus clair) se remarquait trop peu, et le relief manquait de présence. Trois directions ont été prototypées (Lumière, Touche, Élan) ; Yann a gardé Touche et Lumière, et voulait les deux dans le même composant.
+
+- Le composant a une prop `variant` avec trois valeurs : `key` (Touche, par défaut), `light` (Lumière) et `key-light` (les deux).
+- `key` : le bouton a une épaisseur visible, comme une touche de clavier. Au survol, la face monte de 1,5 à 2,5 px au-dessus de son socle ; au clic, elle s'enfonce à fleur du socle et revient avec le même ressort.
+- `light` : face plate et brillante comme la référence. Au survol, une lumière douce suit le curseur et le bord s'éclaire de son côté. Le bouton ne bouge pas au survol ; le clic reste celui d'origine.
+- `key-light` : la touche avec une lumière plus discrète (45 % de l'intensité de `light`), parce que les deux effets à pleine force chargeaient trop le bouton.
+- Ces trois variantes remplacent la ligne « Survol » de la première expérience. Le reste (tailles, teintes, clic, focus, désactivé, mouvement réduit, option `shine`) ne change pas.

@@ -1,5 +1,10 @@
 /*
  * Glossy button. Every color in the relief is mixed from one value, --accent.
+ *
+ * The <button> is a frame. Inside it, .gb__face is the visible button. The key
+ * variants add .gb__base under the face, offset down by --_h: the strip of base
+ * that shows below the face is the button's thickness.
+ *
  * --gb-press goes from 0 (resting) to 1 (pressed in) and is driven by a spring
  * in GlossyButton.tsx. It can briefly dip below 0 when the button springs back.
  */
@@ -9,51 +14,38 @@
   --_top: color-mix(in oklab, var(--_accent), white 20%);
   --_bottom: color-mix(in oklab, var(--_accent), black 4%);
   --_rim: color-mix(in oklab, var(--_accent), black 30%);
+  --_side: color-mix(in oklab, var(--_accent), black 42%);
+  --_side-top: color-mix(in oklab, var(--_accent), black 28%);
   --_shadow: color-mix(in oklab, var(--_accent), black 55%);
   --_ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --gb-press: 0;
-  --gb-depth: 1.5px;
+
+  /* Thickness and hover lift (key variants only). */
+  --_h: 0px;
+  --_lift: 0px;
+  /* How far a press travels: down to flush with the base, plus the lift while hovered. */
+  --_travel: var(--_h);
+  /* Press depth of the flat light variant. */
+  --_depth: 1.5px;
+  /* Cursor light: diameter and strength. */
+  --_spot: 160px;
+  --_light: 1;
 
   position: relative;
   isolation: isolate;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.45em;
-  height: 40px;
-  padding: 0 16px;
-  border: 1px solid var(--_rim);
+  display: inline-grid;
+  padding: 0 0 var(--_h);
+  border: 0;
   border-radius: 10px;
+  background: none;
 
   font: inherit;
-  font-family: inherit;
   font-size: 14px;
   font-weight: 600;
   letter-spacing: -0.01em;
   line-height: 1;
   white-space: nowrap;
   color: white;
-  text-shadow: 0 1px 1px color-mix(in srgb, var(--_shadow) 45%, transparent);
-
-  background: linear-gradient(to bottom, var(--_top), var(--_accent) 60%, var(--_bottom));
-  box-shadow:
-    /* light catching the top edge */
-    inset 0 1px 0 0 rgb(255 255 255 / 0.32),
-    /* a thin lighter ring just inside the border */
-    inset 0 0 0 1px color-mix(in srgb, var(--_top) 60%, transparent),
-    /* darker lip at the bottom */
-    inset 0 -1px 0 0 color-mix(in srgb, var(--_shadow) 30%, transparent),
-    /* contact shadow, tightens as the button goes down */
-    0 calc(1px + (1 - var(--gb-press)) * 1px) calc(1px + (1 - var(--gb-press)) * 2px)
-      color-mix(in srgb, var(--_shadow) 45%, transparent),
-    /* soft cast shadow */
-    0 calc((1 - var(--gb-press)) * 4px + 1px) calc((1 - var(--gb-press)) * 10px + 2px) -2px
-      color-mix(in srgb, var(--_accent) 35%, transparent);
-
-  transform: translateY(calc(var(--gb-press) * var(--gb-depth)))
-    scale(calc(1 - var(--gb-press) * 0.03));
-  translate: 0 0;
-  transition: translate 220ms var(--_ease-out);
 
   cursor: pointer;
   user-select: none;
@@ -63,47 +55,106 @@
 }
 
 .gb[data-size='sm'] {
-  --gb-depth: 1px;
-  height: 32px;
-  padding: 0 12px;
+  --_depth: 1px;
+  --_spot: 120px;
   border-radius: 8px;
   font-size: 13px;
 }
 
 .gb[data-size='lg'] {
-  --gb-depth: 2px;
-  height: 48px;
-  padding: 0 22px;
+  --_depth: 2px;
+  --_spot: 220px;
   border-radius: 12px;
   font-size: 16px;
 }
+
+.gb:not([data-variant='light']) { --_h: 3px; --_lift: 2px; }
+.gb:not([data-variant='light'])[data-size='sm'] { --_h: 2px; --_lift: 1.5px; }
+.gb:not([data-variant='light'])[data-size='lg'] { --_h: 4px; --_lift: 2.5px; }
+
+/* On the keycap the light only hints at the cursor, so the two effects don't compete. */
+.gb[data-variant='key-light'] { --_light: 0.45; }
 
 .gb[data-tone='blue'] { --accent: #1a70e6; }
 .gb[data-tone='violet'] { --accent: #6d4aff; }
 .gb[data-tone='green'] { --accent: #13804a; }
 .gb[data-tone='neutral'] { --accent: #26262b; }
 
-/* Shading that darkens the face while pressed, with an inner shadow at the top. */
-.gb::before {
-  content: '';
+/* Base: the side of the keycap, and the shadows it casts. */
+.gb__base {
   position: absolute;
-  inset: 0;
+  inset: var(--_h) 0 0;
   border-radius: inherit;
-  background: linear-gradient(to bottom, rgb(0 0 0 / 0.14), rgb(0 0 0 / 0.04));
-  box-shadow: inset 0 1px 3px rgb(0 0 0 / 0.22);
-  opacity: var(--gb-press);
-  pointer-events: none;
+  background: linear-gradient(to bottom, var(--_side-top), var(--_side));
+  box-shadow:
+    inset 0 -1px 0 0 rgb(0 0 0 / 0.25),
+    0 1px 2px color-mix(in srgb, var(--_shadow) 50%, transparent),
+    0 4px 10px -2px color-mix(in srgb, var(--_accent) 35%, transparent);
 }
 
-/* Longer shadow used on hover. Kept on its own layer so it can fade with opacity. */
-.gb::after {
+/* The longer shadow of a raised face. Fades in on hover. */
+.gb__base::after {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  box-shadow: 0 10px 22px -8px color-mix(in srgb, var(--_accent) 60%, transparent);
+  box-shadow: 0 12px 24px -10px color-mix(in srgb, var(--_accent) 70%, transparent);
   opacity: 0;
-  transition: opacity 200ms ease;
+  transition: opacity 160ms ease;
+}
+
+.gb__face {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45em;
+  height: 40px;
+  padding: 0 16px;
+  border: 1px solid var(--_rim);
+  border-radius: inherit;
+  background: linear-gradient(to bottom, var(--_top), var(--_accent) 60%, var(--_bottom));
+  box-shadow:
+    /* light catching the top edge */
+    inset 0 1px 0 0 rgb(255 255 255 / 0.32),
+    /* a thin lighter ring just inside the border */
+    inset 0 0 0 1px color-mix(in srgb, var(--_top) 60%, transparent),
+    /* darker lip at the bottom */
+    inset 0 -1px 0 0 color-mix(in srgb, var(--_shadow) 30%, transparent);
+  text-shadow: 0 1px 1px color-mix(in srgb, var(--_shadow) 45%, transparent);
+
+  /* Hover moves `translate` with a transition; the press spring moves `transform` every frame. */
+  translate: 0 0;
+  transition: translate 160ms var(--_ease-out);
+  transform: translateY(calc(var(--gb-press) * var(--_travel)));
+}
+
+.gb[data-size='sm'] .gb__face { height: 32px; padding: 0 12px; }
+.gb[data-size='lg'] .gb__face { height: 48px; padding: 0 22px; }
+
+/* Without a base, the face casts its own shadow, which tightens as it goes down. */
+.gb[data-variant='light'] .gb__face {
+  box-shadow:
+    inset 0 1px 0 0 rgb(255 255 255 / 0.32),
+    inset 0 0 0 1px color-mix(in srgb, var(--_top) 60%, transparent),
+    inset 0 -1px 0 0 color-mix(in srgb, var(--_shadow) 30%, transparent),
+    0 calc(1px + (1 - var(--gb-press)) * 1px) calc(1px + (1 - var(--gb-press)) * 2px)
+      color-mix(in srgb, var(--_shadow) 45%, transparent),
+    0 calc((1 - var(--gb-press)) * 4px + 1px) calc((1 - var(--gb-press)) * 10px + 2px) -2px
+      color-mix(in srgb, var(--_accent) 35%, transparent);
+  transform: translateY(calc(var(--gb-press) * var(--_depth)))
+    scale(calc(1 - var(--gb-press) * 0.03));
+}
+
+/* Shading that darkens the face while pressed, with an inner shadow at the top. */
+.gb__face::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(to bottom, rgb(0 0 0 / 0.12), rgb(0 0 0 / 0.03));
+  box-shadow: inset 0 1px 3px rgb(0 0 0 / 0.2);
+  opacity: var(--gb-press);
   pointer-events: none;
 }
 
@@ -113,16 +164,59 @@
   border-radius: inherit;
   background: linear-gradient(to bottom, rgb(255 255 255 / 0.2), transparent 55%);
   opacity: 0.6;
-  transition: opacity 200ms ease;
+  transition: opacity 160ms ease;
   pointer-events: none;
 }
 
+/* Cursor light. GlossyButton.tsx moves the spots with `transform`. */
+.gb__light,
+.gb__rim,
 .gb__shine {
   position: absolute;
-  inset: 0;
-  overflow: hidden;
   border-radius: inherit;
+  overflow: hidden;
   pointer-events: none;
+}
+
+.gb__light,
+.gb__shine {
+  inset: 0;
+}
+
+/* Only a 1px ring of this layer shows, so the border itself catches the light. */
+.gb__rim {
+  inset: -1px;
+  padding: 1px;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+
+.gb__spot,
+.gb__rim-spot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--_spot);
+  height: var(--_spot);
+  margin: calc(var(--_spot) / -2) 0 0 calc(var(--_spot) / -2);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 160ms ease;
+  will-change: transform;
+}
+
+.gb__spot {
+  background: radial-gradient(
+    closest-side,
+    rgb(255 255 255 / calc(0.42 * var(--_light))),
+    rgb(255 255 255 / calc(0.14 * var(--_light))) 50%,
+    transparent
+  );
+}
+
+.gb__rim-spot {
+  background: radial-gradient(closest-side, rgb(255 255 255 / calc(0.95 * var(--_light))), transparent);
 }
 
 .gb__shine::before {
@@ -132,12 +226,7 @@
   bottom: 0;
   left: -50%;
   width: 50%;
-  background: linear-gradient(
-    to right,
-    transparent,
-    rgb(255 255 255 / 0.28) 50%,
-    transparent
-  );
+  background: linear-gradient(to right, transparent, rgb(255 255 255 / 0.28) 50%, transparent);
   transform: translateX(0) skewX(-20deg);
 }
 
@@ -160,22 +249,45 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .gb:hover:not(:disabled) {
-    translate: 0 -1.5px;
+  /* Keycap: the face rises off its base and its shadow lengthens. */
+  .gb:not([data-variant='light']):hover:not(:disabled) {
+    --_travel: calc(var(--_h) + var(--_lift));
   }
 
-  .gb:hover:not(:disabled)::after {
+  .gb:hover:not(:disabled) .gb__face {
+    translate: 0 calc(var(--_lift) * -1);
+    transition-duration: 220ms;
+  }
+
+  .gb:hover:not(:disabled) .gb__base::after {
     opacity: 1;
+    transition-duration: 220ms;
+  }
+
+  .gb[data-pressed]:hover .gb__base::after {
+    opacity: 0.2;
+    transition-duration: 100ms;
   }
 
   .gb:hover:not(:disabled) .gb__glow {
-    opacity: 1;
+    opacity: 0.9;
+    transition-duration: 220ms;
   }
 
-  /* Pressing hides most of the long hover shadow: the button is close to the surface again. */
-  .gb[data-pressed]:hover::after {
-    opacity: 0.35;
-    transition-duration: 120ms;
+  .gb[data-variant='key-light']:hover:not(:disabled) .gb__glow {
+    opacity: 0.75;
+  }
+
+  /* Light: the face catches the light where the cursor is. */
+  .gb:hover:not(:disabled) :is(.gb__spot, .gb__rim-spot) {
+    opacity: 1;
+    transition-duration: 200ms;
+  }
+
+  /* Pressing pushes the face away from the light. */
+  .gb[data-pressed]:hover .gb__spot {
+    opacity: 0.45;
+    transition-duration: 100ms;
   }
 
   .gb[data-shine]:hover:not(:disabled) .gb__shine::before {
@@ -192,30 +304,33 @@
 .gb:disabled {
   --_accent: color-mix(in oklab, var(--accent, #1a70e6), #6e6e76 80%);
   color: rgb(255 255 255 / 0.55);
-  text-shadow: none;
-  background: var(--_accent);
-  box-shadow:
-    inset 0 1px 0 0 rgb(255 255 255 / 0.12),
-    inset 0 0 0 1px rgb(255 255 255 / 0.06);
   cursor: not-allowed;
 }
 
-.gb:disabled .gb__glow {
-  opacity: 0;
+.gb:not([data-variant='light']):disabled { --_h: 1px; }
+
+.gb:disabled .gb__face {
+  background: var(--_accent);
+  text-shadow: none;
+  box-shadow:
+    inset 0 1px 0 0 rgb(255 255 255 / 0.12),
+    inset 0 0 0 1px rgb(255 255 255 / 0.06);
 }
 
+.gb:disabled .gb__base { box-shadow: none; }
+.gb:disabled .gb__glow { opacity: 0; }
+
 @media (prefers-reduced-motion: reduce) {
-  /* No movement at all. Presses and hovers only change light and color. */
-  .gb {
+  /* No movement at all. Hover and press only change light, shadow and color. */
+  .gb .gb__face,
+  .gb[data-variant='light'] .gb__face,
+  .gb:hover:not(:disabled) .gb__face {
     transform: none;
+    translate: 0 0;
     transition: none;
   }
 
-  .gb:hover:not(:disabled) {
-    translate: 0 0;
-  }
-
-  .gb::before {
+  .gb__face::before {
     transition: opacity 150ms ease;
   }
 
