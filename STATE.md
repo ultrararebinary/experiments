@@ -28,11 +28,17 @@ A public lab of small React UI components that anyone can copy, published at htt
 - Reduced motion checked by forcing the media rule and `matchMedia` in the page (the built-in browser cannot emulate the setting): no transform, the press shading fades in over 150 ms, shine hidden.
 - Production build served by `vite preview` under `/experiments/`: home, card click, direct reload of `#/glossy-button`, unknown route, zero console errors, no horizontal scroll at 375 px.
 
+## Published (2026-10-29)
+
+- Repo https://github.com/ultrararebinary/experiments created and pushed, Pages set to the workflow source.
+- First run of the deploy workflow passed (build and deploy).
+- Live site checked in the built-in browser: home, live button press (peak 0.88, overshoot about -0.10), hover lift, card click, direct reload of `#/glossy-button`, copy button (clipboard matched the file), zero console errors.
+- Workflow annotation to watch: GitHub runs the v4/v5 actions on Node 24 because Node 20 is deprecated. It works today; bump the action versions when new majors are out.
+
 ## Open
 
-- Not yet published: the GitHub repo and Pages setup wait for Yann's go-ahead.
 - Reduced motion was not tested with the real OS setting, and touch was not tested on a phone.
 
 ## Next
 
-Publish after Yann's approval, check the live site, then start the next experiment with `NEW-EXPERIMENT.md`.
+Start the next experiment with `NEW-EXPERIMENT.md`.
