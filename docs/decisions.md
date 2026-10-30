@@ -106,3 +106,23 @@ Demandé par Yann. Raison : l'accueil ne disait ni qui fait ce labo ni pourquoi,
 - Le thème est un mot dans la ligne de liens. Pas de pied de page.
 - README du dépôt : une image d'accueil et une liste d'expériences avec un aperçu chacune, en clair et en sombre, sans GIF. Les images sont de vraies captures du site, jamais des images générées. `npm run readme` (script `scripts/readme.mjs`, sans dépendance, Chrome requis) les refait et réécrit la liste entre `<!-- experiments:start -->` et `<!-- experiments:end -->` à partir du `meta` de chaque `demo.tsx`. Color Bloom est capturé pendant un appui, sinon on ne verrait qu'un point. Rejetés : un mur de badges, et les GIF pour l'instant (lourds, et faux dès qu'une animation change).
 - L'écart du `demo.tsx` de Color Bloom passe de 180 à 140 px, pour que l'anneau de la grande taille reste dans la colonne.
+
+## Quatrième expérience : Bento Grid (30 octobre 2026)
+
+Demandé par Yann : une bento grid originale et minimaliste, sans référence, avec des animations fluides, rien de générique, conçue en trois versions avec `/prototype`. Sa demande explicite prime sur la liste de skills de `CLAUDE.md` pour cette expérience, comme pour les color pickers. « Variants I want: For each three versions » a été lu ainsi : trois versions, chacune en trois tailles qui sont aussi 3, 5 et 7 compartiments. Yann n'a pas encore choisi.
+
+- Dossier `experiments/bento-grid` (`BentoGrid`), prop `variant` à trois valeurs. Le sélecteur de prototypage reste dans `demo.tsx` jusqu'au choix.
+- `seam` : un seul rectangle et des lignes. On tire une ligne, les compartiments des deux côtés font de la place. La taille du chiffre suit celle du compartiment. Une pression donne la place à un compartiment.
+- `tray` : des pièces dans une boîte avec des emplacements vides, comme un jeu de taquin. Les pièces butent sur leurs voisines et peuvent tourner à un emplacement pendant le même geste. Un point marque chaque emplacement vide.
+- `dive` : la disposition ne change jamais, seule une caméra bouge. Une pression entre dans un compartiment, un glissé passe au voisin, un lancer sans voisin ressort.
+- Le contenu de la démo décrit le labo lui-même, avec de vrais chiffres, pour ne rien inventer.
+- Exception assumée à la règle des 300 ms : ces ressorts durent plus longtemps, parce qu'on peut toujours les rattraper et qu'ils ne bloquent rien. `seam` modifie aussi la largeur et la hauteur à chaque image, ce qui reste acceptable pour sept compartiments. Le clavier n'anime rien et le mouvement réduit retire tous les déplacements.
+- Rejetés : animation d'entrée (l'accueil la rejouerait à chaque retour) et lumière qui suit le curseur (déjà vue sur trop de bento grids).
+
+## Changement du 30 octobre 2026 : Shoji Bento, et règle pour `/prototype`
+
+Demandé par Yann après avoir essayé les trois versions sur le serveur de développement. Il garde `seam` et supprime `tray` et `dive`. Raison du nom : il voulait un nom propre qui mette l'expérience en valeur, comme Glossy Button. Un shoji est un écran coulissant japonais fait de fines lignes et de panneaux qui glissent, ce qui décrit le composant et va bien avec « bento ».
+
+- Le dossier devient `experiments/shoji-bento` (`ShojiBento`), sans prop `variant` ni sélecteur de prototypage. Cela remplace le dossier `bento-grid`, les trois valeurs de `variant` et le sélecteur de la section précédente. Le reste de `seam` ne change pas.
+- `meta` accepte un `order` optionnel : à date égale, le plus grand passe devant. Raison : l'accueil montre la plus récente en haut, et le tri alphabétique plaçait Shoji Bento en troisième position parmi les trois expériences du jour.
+- Règle de méthode, qui vaut pour la suite : avec `/prototype`, trois versions sont conçues et laissées sur le serveur de développement, sans préparer de commit. Yann choisit directement là. Le commit vient après son choix. Raison : le premier commit contenait les trois versions avant qu'il ait choisi, et il a fallu le refaire. Détail dans `CLAUDE.md`, section Prototypes.

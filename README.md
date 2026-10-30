@@ -17,6 +17,17 @@ The previews below are pictures. The components themselves are live on the [site
 
 <!-- experiments:start -->
 
+### [Shoji Bento](https://ultrararebinary.github.io/experiments/#/shoji-bento)
+
+<a href="https://ultrararebinary.github.io/experiments/#/shoji-bento">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/readme/shoji-bento-dark.png">
+    <img alt="Shoji Bento, as it looks on the site" src="docs/readme/shoji-bento-light.png">
+  </picture>
+</a>
+
+A bento grid made of nothing but thin lines, like a paper screen. Slide a line and the compartments make room, with type that grows to fill them.
+
 ### [Color Bloom](https://ultrararebinary.github.io/experiments/#/color-bloom)
 
 <a href="https://ultrararebinary.github.io/experiments/#/color-bloom">

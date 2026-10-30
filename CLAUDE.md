@@ -8,7 +8,7 @@ Talk to Yann in French. Code, comments and everything published in the repo stay
 
 - `src/` is the gallery app (Vite, React, TypeScript, plain CSS). It discovers experiments with `import.meta.glob`; never add a hand-maintained list.
 - `experiments/<name>/` holds exactly four files: `<Name>.tsx`, `<Name>.css`, `demo.tsx`, `README.md`. No fifth file, no shared helpers imported from elsewhere. A component must work after copying its `.tsx` and `.css` into another project.
-- `demo.tsx` exports `meta` (`title`, `description`, `date` as `YYYY-MM-DD`), `Preview` (shown live on the home card) and a default `Demo` (every variant). Layout helpers for demos (`.demo`, `.demo__row`, `.demo__section`, `.demo__hint`) live in `src/styles.css`.
+- `demo.tsx` exports `meta` (`title`, `description`, `date` as `YYYY-MM-DD`, and an optional `order` when an experiment must come before another of the same day), `Preview` (shown live on the home card) and a default `Demo` (every variant). Layout helpers for demos (`.demo`, `.demo__row`, `.demo__section`, `.demo__hint`) live in `src/styles.css`.
 - Components render real, accessible elements, accept native props, and use no Tailwind. Motion or GSAP only if an experiment really needs it.
 - `STATE.md` tracks where the project stands. Update it at each milestone.
 
@@ -19,6 +19,10 @@ Rebuild effects yourself from an image or an observation. Never download or copy
 ## Skills
 
 For design and motion, use only `emil-design-eng` and `apple-design` (in `/Users/yann/AIOS/.agents/skills/`). Load both with the Skill tool at the start of each experiment. When they disagree, `docs/decisions.md` decides if it covers the case; otherwise choose and explain the choice to Yann. For public prose (READMEs, demo text), use `humanizer`. Do not load other design, interface, animation or writing skills (web-craft, gpt-taste, frontend-design, impeccable, ui-ux-pro-max, stop-slop).
+
+## Prototypes
+
+When Yann asks for `/prototype`, build three versions behind the picker, check them, leave the dev server running and stop. Prepare no commit: he picks on the dev server. This comes before "make one commit" in `NEW-EXPERIMENT.md`, which applies only once he has chosen. After his choice, remove the other versions, give the experiment an original name of its own (like Glossy Button, not just the type of component), and then go through the list below.
 
 ## Before saying it's done
 

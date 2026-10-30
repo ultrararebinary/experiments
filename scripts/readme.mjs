@@ -34,10 +34,11 @@ async function readExperiments() {
     const field = (key) => src.match(new RegExp(`${key}:\\s*(['"])(.*?)\\1`))?.[2]
     const [title, description, date] = [field('title'), field('description'), field('date')]
     if (!title || !description || !date) throw new Error(`${dir.name}/demo.tsx: meta is missing a field`)
-    list.push({ slug: dir.name, title, description, date })
+    const order = Number(src.match(/order:\s*(\d+)/)?.[1] ?? 0)
+    list.push({ slug: dir.name, title, description, date, order })
   }
   // Same order as the site: newest first.
-  return list.sort((a, b) => b.date.localeCompare(a.date) || a.slug.localeCompare(b.slug))
+  return list.sort((a, b) => b.date.localeCompare(a.date) || b.order - a.order || a.slug.localeCompare(b.slug))
 }
 
 async function waitForHttp(url) {

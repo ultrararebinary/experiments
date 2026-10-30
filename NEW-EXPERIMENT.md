@@ -15,3 +15,5 @@ Anything to avoid: [optional]
 
 Rebuild the effect yourself, without copying code or text from the source. Follow the four-file structure, run every check listed in CLAUDE.md (including `npm run readme`), make one commit, and stop before pushing: show me screenshots and wait for my go-ahead.
 ```
+
+If the prompt asks for `/prototype`, the commit waits: see "Prototypes" in `CLAUDE.md`.

@@ -1,7 +1,8 @@
 import type { ComponentType } from 'react'
 
 type DemoModule = {
-  meta: { title: string; description: string; date: string }
+  // `order` settles experiments added on the same day: the higher one comes first.
+  meta: { title: string; description: string; date: string; order?: number }
   Preview: ComponentType
   default: ComponentType
 }
@@ -53,4 +54,4 @@ export const experiments: Experiment[] = Object.entries(demos)
       files,
     }
   })
-  .sort((a, b) => b.date.localeCompare(a.date))
+  .sort((a, b) => b.date.localeCompare(a.date) || (b.order ?? 0) - (a.order ?? 0))

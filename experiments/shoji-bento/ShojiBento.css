@@ -1,0 +1,202 @@
+.shoji {
+  --shoji-fg: light-dark(#21201c, #eeeeec);
+  --shoji-bg: light-dark(#fdfdfc, #111110);
+  --shoji-line: color-mix(in oklab, var(--shoji-fg) 18%, transparent);
+  --shoji-width: 480px;
+
+  position: relative;
+  width: min(100%, var(--shoji-width));
+  overflow: clip;
+  border-radius: 14px;
+  color: var(--shoji-fg);
+  font-variant-numeric: tabular-nums;
+  box-shadow: inset 0 0 0 1px var(--shoji-line);
+  aspect-ratio: 3 / 2;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.shoji[data-size='sm'] {
+  --shoji-width: 380px;
+}
+
+.shoji[data-size='lg'] {
+  --shoji-width: 640px;
+  aspect-ratio: 4 / 3;
+}
+
+.shoji[data-disabled] {
+  opacity: 0.55;
+}
+
+/* Each compartment is a size container, so the value is as large as its room allows and grows or
+   shrinks along with it. */
+
+.shoji__cell {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 14px;
+  overflow: hidden;
+  container-type: size;
+  cursor: pointer;
+}
+
+.shoji__cell[data-solid] {
+  color: var(--shoji-bg);
+  background-color: var(--shoji-fg);
+}
+
+.shoji__label {
+  display: block;
+  flex-shrink: 0;
+  overflow: hidden;
+  font-size: 0.8125rem;
+  line-height: 1.3;
+  color: color-mix(in oklab, currentColor 68%, transparent);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.shoji__value {
+  display: block;
+  margin-top: auto;
+  font-size: clamp(0.75rem, min(40cqh, calc(100cqi / (var(--length) * 0.7))), 6rem);
+  font-weight: 500;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+}
+
+/* The detail only appears once a compartment has room for it. */
+
+.shoji__detail {
+  position: absolute;
+  top: 36px;
+  left: 14px;
+  right: 14px;
+  max-width: 30ch;
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  color: color-mix(in oklab, currentColor 68%, transparent);
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+@container (min-width: 230px) and (min-height: 170px) {
+  .shoji__detail {
+    opacity: 1;
+  }
+}
+
+/* The hit area is much wider than the 1 px line it draws. */
+
+.shoji__line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  touch-action: none;
+  outline-offset: -2px;
+}
+
+.shoji__line[data-axis='x'] {
+  left: -10px;
+  width: 20px;
+  cursor: col-resize;
+}
+
+.shoji__line[data-axis='y'] {
+  top: -10px;
+  height: 20px;
+  cursor: row-resize;
+}
+
+@media (pointer: coarse) {
+  .shoji__line[data-axis='x'] {
+    left: -16px;
+    width: 32px;
+  }
+
+  .shoji__line[data-axis='y'] {
+    top: -16px;
+    height: 32px;
+  }
+}
+
+.shoji__line::before {
+  content: '';
+  position: absolute;
+  background: var(--shoji-line);
+  transition:
+    transform 150ms cubic-bezier(0.23, 1, 0.32, 1),
+    background-color 150ms ease;
+}
+
+.shoji__line[data-axis='x']::before {
+  top: 0;
+  bottom: 0;
+  left: calc(50% - 0.5px);
+  width: 1px;
+}
+
+.shoji__line[data-axis='y']::before {
+  top: calc(50% - 0.5px);
+  right: 0;
+  left: 0;
+  height: 1px;
+}
+
+.shoji__line[data-grabbed]::before,
+.shoji__line:focus-visible::before {
+  background: var(--shoji-fg);
+}
+
+.shoji__line[data-grabbed][data-axis='x']::before {
+  transform: scaleX(3);
+}
+
+.shoji__line[data-grabbed][data-axis='y']::before {
+  transform: scaleY(3);
+}
+
+/* The ring hugs the line it belongs to, since the wide hit area would run over the text. */
+
+.shoji__line:focus-visible {
+  outline: none;
+}
+
+.shoji__line:focus-visible::before {
+  outline: 2px solid var(--shoji-fg);
+  outline-offset: 2px;
+  border-radius: 1px;
+}
+
+.shoji[data-disabled] .shoji__cell,
+.shoji[data-disabled] .shoji__line {
+  pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .shoji__line:hover::before {
+    background: color-mix(in oklab, var(--shoji-fg) 55%, transparent);
+  }
+
+  .shoji__line[data-axis='x']:hover::before {
+    transform: scaleX(2);
+  }
+
+  .shoji__line[data-axis='y']:hover::before {
+    transform: scaleY(2);
+  }
+}
+
+/* The springs live in the .tsx file and already skip movement here. This covers what the CSS moves. */
+
+@media (prefers-reduced-motion: reduce) {
+  .shoji__line::before {
+    transition-property: background-color;
+    transform: none !important;
+  }
+}
