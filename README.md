@@ -1,9 +1,11 @@
 # experiments
 
-<a href="https://ultrararebinary.github.io/experiments/"><picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/readme/hero-dark.png">
-  <img alt="The experiments site: a short note about the author above a live Color Bloom picker" src="docs/readme/hero-light.png">
-</picture></a>
+<a href="https://ultrararebinary.github.io/experiments/">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/readme/hero-dark.png">
+    <img alt="The experiments site: a short note about the author above a live Color Bloom picker" src="docs/readme/hero-light.png">
+  </picture>
+</a>
 
 Small interface experiments, free to copy. Each one is a React component with its own CSS file and nothing to install: copy the two files into your project and change whatever you like.
 
@@ -17,28 +19,34 @@ The previews below are pictures. The components themselves are live on the [site
 
 ### [Color Bloom](https://ultrararebinary.github.io/experiments/#/color-bloom)
 
-<a href="https://ultrararebinary.github.io/experiments/#/color-bloom"><picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/readme/color-bloom-dark.png">
-  <img alt="Color Bloom, as it looks on the site" src="docs/readme/color-bloom-light.png">
-</picture></a>
+<a href="https://ultrararebinary.github.io/experiments/#/color-bloom">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/readme/color-bloom-dark.png">
+    <img alt="Color Bloom, as it looks on the site" src="docs/readme/color-bloom-light.png">
+  </picture>
+</a>
 
 A color picker that is only a dot until you press it. Petals unfurl, you slide to one, and its color runs back into the dot.
 
 ### [Color Drift](https://ultrararebinary.github.io/experiments/#/color-drift)
 
-<a href="https://ultrararebinary.github.io/experiments/#/color-drift"><picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/readme/color-drift-dark.png">
-  <img alt="Color Drift, as it looks on the site" src="docs/readme/color-drift-light.png">
-</picture></a>
+<a href="https://ultrararebinary.github.io/experiments/#/color-drift">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/readme/color-drift-dark.png">
+    <img alt="Color Drift, as it looks on the site" src="docs/readme/color-drift-light.png">
+  </picture>
+</a>
 
 A color picker with nothing on it. Drag the color itself, and the new shade spreads out from your finger like ink.
 
 ### [Glossy button](https://ultrararebinary.github.io/experiments/#/glossy-button)
 
-<a href="https://ultrararebinary.github.io/experiments/#/glossy-button"><picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/readme/glossy-button-dark.png">
-  <img alt="Glossy button, as it looks on the site" src="docs/readme/glossy-button-light.png">
-</picture></a>
+<a href="https://ultrararebinary.github.io/experiments/#/glossy-button">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/readme/glossy-button-dark.png">
+    <img alt="Glossy button, as it looks on the site" src="docs/readme/glossy-button-light.png">
+  </picture>
+</a>
 
 A raised button lit from above, in three variants. One accent color drives the gradient and rim.
 

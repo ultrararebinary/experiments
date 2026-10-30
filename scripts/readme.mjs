@@ -168,10 +168,15 @@ function listMarkdown(experiments) {
       return [
         `### [${title}](${url})`,
         '',
-        `<a href="${url}"><picture>`,
-        `  <source media="(prefers-color-scheme: dark)" srcset="docs/readme/${slug}-dark.png">`,
-        `  <img alt="${title}, as it looks on the site" src="docs/readme/${slug}-light.png">`,
-        `</picture></a>`,
+        // Each tag on its own line and no blank line inside: GitHub reads this as one block of
+        // raw HTML. With `<a><picture>` on one line it empties the picture and keeps only the
+        // light image.
+        `<a href="${url}">`,
+        `  <picture>`,
+        `    <source media="(prefers-color-scheme: dark)" srcset="docs/readme/${slug}-dark.png">`,
+        `    <img alt="${title}, as it looks on the site" src="docs/readme/${slug}-light.png">`,
+        `  </picture>`,
+        `</a>`,
         '',
         description,
       ].join('\n')
