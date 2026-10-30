@@ -84,13 +84,11 @@ Demandé par Yann. Raison : après le passage aux ombres noires, il voyait encor
 - `--accent` règle le dégradé et le bord de la face. Cela remplace la mention du socle dans la décision « ombres neutres » du même jour.
 - Le site a un mode sombre et un mode clair, avec un bouton qui retient le choix. Sans choix enregistré, il suit le réglage de l'appareil.
 
-## Deuxième expérience : color picker (30 octobre 2026)
+## Deuxième et troisième expériences : Color Drift et Color Bloom (30 octobre 2026)
 
-Demandé par Yann : un color picker original et minimaliste, sans référence, trois versions avec animations fluides et trois tailles chacune, rien de générique. Il a demandé `/prototype` pour les concevoir, alors que `CLAUDE.md` limite les skills de design : sa demande explicite prime pour cette expérience.
+Demandé par Yann : un color picker original et minimaliste, sans référence, avec des animations fluides et trois tailles, rien de générique. Il a demandé `/prototype` pour concevoir trois directions, alors que `CLAUDE.md` limite les skills de design : sa demande explicite prime pour cette expérience. Sur les trois directions (Drift, Tuner, Bloom), il a gardé Drift et Bloom, chacune dans sa propre expérience, et a demandé de pousser leurs animations avec `emil-design-eng`. Il aimait déjà le mouvement de Drift et l'apparition des cercles de Bloom. Tuner et le sélecteur de prototypage sont retirés.
 
-- Dossier `experiments/color-picker`, composant `ColorPicker` avec `variant` (`drift`, `tuner`, `bloom`) et `size` (`sm`, `md`, `lg`).
-- `drift` : une seule surface remplie de la couleur. On la fait glisser : horizontal pour la teinte, vertical pour le ton, avec de l'élan quand on la lance.
-- `tuner` : une rangée de fines lignes sous une aiguille fixe, comme un cadran de radio. Glisser à l'horizontale règle la teinte, à la verticale le ton, et l'élan s'arrête sur la ligne la plus proche.
-- `bloom` : un point qui s'ouvre en anneau de pétales. On appuie, on glisse vers un pétale, on relâche. Tirer le pétale vers l'intérieur éclaircit, vers l'extérieur assombrit.
-- Les couleurs sont choisies en OKLCH et le composant renvoie un hex.
-- Les trois versions restent dans le composant, puisque Yann les a demandées toutes les trois. Le sélecteur du skill `/prototype` reste dans `demo.tsx` tant qu'il n'a pas dit lesquelles garder.
+- Dossiers `experiments/color-drift` (`ColorDrift`) et `experiments/color-bloom` (`ColorBloom`), chacun en `sm`, `md`, `lg`. Les couleurs sont choisies en OKLCH et le composant renvoie un hex.
+- `color-drift` : une surface qu'on fait glisser, horizontal pour la teinte, vertical pour le ton, avec de l'élan quand on la lance. La nouvelle couleur part du doigt et se diffuse vers les bords. La surface se déforme autour du point saisi et rebondit un peu seulement après un lancer.
+- `color-bloom` : un point qui s'ouvre sur 12 pétales. Ils sortent en spirale avec la couleur du point, puis prennent la leur. On glisse vers un pétale, tirer vers l'intérieur éclaircit, vers l'extérieur assombrit. Une tige relie le point au pétale. Au relâchement la couleur descend par la tige et remplit le point depuis ce côté. Le point garde son ancienne couleur tant qu'on n'a pas relâché, mais la valeur change dès le relâchement.
+- Exception assumée à la règle des 300 ms et à « transform et opacity seulement » : un color picker sert rarement et ces animations expliquent ce qui se passe. Le clavier reste sans animation et le mouvement réduit les retire.

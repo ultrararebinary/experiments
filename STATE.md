@@ -11,7 +11,7 @@ A public lab of small React UI components that anyone can copy, published at htt
 - Gallery app (Vite 8, React 19, TypeScript 7, plain CSS) with a home grid of live previews and one page per experiment: all variants, code tabs with a copy button, README notes.
 - Hash routing (`#/glossy-button`): GitHub Pages always serves `index.html`, so a direct reload of an experiment page works with no 404 trick.
 - `experiments/glossy-button`: sizes `sm`/`md`/`lg`, tones `blue`/`violet`/`green`/`neutral`, any color through `--accent` (gradient and rim mixed with `color-mix()`; neutral base, one crisp edge, no soft shadow), optional `trailing` slot, three variants (`key` keycap by default, `light` with a cursor-following light, `key-light` with both and a softer light), press driven by a small hand-written spring, focus ring, disabled state, reduced motion, optional `shine`.
-- `experiments/color-picker` (2026-10-30, committed locally, not pushed): variants `drift`, `tuner` and `bloom`, each in `sm`/`md`/`lg`, picked in OKLCH, returning a hex string. The demo keeps the `/prototype` picker until Yann says which versions stay.
+- `experiments/color-drift` and `experiments/color-bloom` (2026-10-30): two color pickers, each in `sm`/`md`/`lg`, picked in OKLCH, returning a hex string. They replace the three-version `color-picker` from commit 9e15c9a; Tuner and the `/prototype` picker are gone.
 - GitHub Actions workflow `.github/workflows/deploy.yml` (configure-pages, upload-pages-artifact, deploy-pages) on every push to `main`.
 
 ## Key choices
@@ -41,18 +41,17 @@ A public lab of small React UI components that anyone can copy, published at htt
 - Live site checked in the built-in browser: home, live button press (peak 0.88, overshoot about -0.10), hover lift, card click, direct reload of `#/glossy-button`, copy button (clipboard matched the file), zero console errors.
 - Workflow annotation to watch: GitHub runs the v4/v5 actions on Node 24 because Node 20 is deprecated. It works today; bump the action versions when new majors are out.
 
-## Verification of the color picker (2026-10-30, local)
+## Verification of Color Drift and Color Bloom (2026-10-30, local)
 
-- `npm run build` with type check: passes. Dev and production build under `/experiments/`: home card, card click, direct reload, copy button (copied text matched the code shown, clipboard write intercepted), zero console errors, no horizontal scroll at 375 px.
-- Real mouse input on all three variants: Drift drag and flick, with a grab during the coast stopping the hue where it was; Tuner tap, scrub and tone drag, landing on a tick; Bloom tap, hover, pick, drag and release, close from the center without a change.
-- Keyboard: Tab focus ring, arrows on Drift and Tuner with no animation, Bloom open, move, tone, Escape restoring the color, Enter confirming. Disabled state on all three. Dark and light themes.
-- Reduced motion forced in the page: no coast or stretch on Drift, instant landing on Tuner, Bloom without travel or stagger.
+- `npm run build` with type check: passes. Dev and production build under `/experiments/`: home cards, card click, direct reload, copy button on both (copied text matched the code shown, clipboard write intercepted), zero console errors, no horizontal scroll at 375 px.
+- Color Drift, frame by frame with scripted pointer events: the ink gradient follows the pointer and is removed once settled; a grab during a coast froze the hue (80, still 80 after 250 ms); the release wobble settles in about 0.5 s, including after running into white. Keyboard changes don't animate; reduced motion forced in the page gave no transforms and no coast.
+- Color Bloom, with a real held press through scripted events: petals spiral out and wear their own color within about 180 ms; the stem and the wave follow the pointer; the dot keeps its color until release, the value changes at once, the petal arrives in about 110 ms and the flood ends around 320 ms. Pressing during the flood finishes it and reopens from where the petals are. Back to the center cancels with no change. Keyboard opens, moves, confirms and cancels without animation; reduced motion forced gave fades only.
+- Both themes, focus ring by Tab, disabled state.
 
 ## Open
 
-- Reduced motion was not tested with the real OS setting, and touch was not tested on a phone. This applies to both experiments. The Bloom press-and-hold was only driven by an instant tool drag; a slow human hold has not been measured.
-- Yann has not yet said which color picker versions stay, or whether the `/prototype` picker stays in the demo.
+- Reduced motion was not tested with the real OS setting, and touch was not tested on a phone. This applies to all three experiments. Motion was measured with scripted pointer events; how it feels by hand is for Yann to judge.
 
 ## Next
 
-Show Yann the color picker, then push on his go-ahead. Start the next experiment with `NEW-EXPERIMENT.md`.
+Start the next experiment with `NEW-EXPERIMENT.md`.

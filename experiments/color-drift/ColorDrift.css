@@ -1,0 +1,149 @@
+/*
+ * Color Drift. One surface filled with the color. --cd-color is written by the
+ * component; set --cd-focus to change the focus ring.
+ *
+ * Everything that moves is written frame by frame in ColorDrift.tsx. The CSS only
+ * fades the layers in and out.
+ */
+
+.cd {
+  --_size: 120px;
+  --_corner: 34px;
+  --_hex: 11px;
+
+  display: inline-block;
+  width: var(--_size);
+  height: var(--_size);
+  border-radius: var(--_corner);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cd[data-size='sm'] {
+  --_size: 72px;
+  --_corner: 22px;
+  --_hex: 10px;
+}
+
+.cd[data-size='lg'] {
+  --_size: 176px;
+  --_corner: 48px;
+  --_hex: 13px;
+}
+
+.cd[data-active] {
+  cursor: grabbing;
+}
+
+.cd[data-disabled] {
+  opacity: 0.4;
+  filter: grayscale(1);
+  pointer-events: none;
+}
+
+.cd:focus-visible {
+  outline: 2px solid var(--cd-focus, #4d90fe);
+  outline-offset: 3px;
+}
+
+.cd__body {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--cd-color);
+  box-shadow: inset 0 0 0 1px rgb(127 127 127 / 0.22);
+  will-change: transform;
+}
+
+.cd__ink,
+.cd__hints {
+  position: absolute;
+  inset: 0;
+}
+
+.cd__hints {
+  background:
+    linear-gradient(to right, var(--cd-west), transparent 42%, transparent 58%, var(--cd-east)),
+    linear-gradient(to bottom, var(--cd-north), transparent 42%, transparent 58%, var(--cd-south));
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+/* A soft light under the finger. Its position is the center of the ink. */
+.cd__glint {
+  position: absolute;
+  top: calc(var(--_size) * -0.35);
+  left: calc(var(--_size) * -0.35);
+  width: calc(var(--_size) * 0.7);
+  height: calc(var(--_size) * 0.7);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(255 255 255 / 0.2), transparent);
+  opacity: 0;
+  transition: opacity 240ms ease;
+}
+
+.cd__hex {
+  position: relative;
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: var(--_hex);
+  letter-spacing: 0.01em;
+  color: white;
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+.cd[data-dark-text] .cd__hex {
+  color: rgb(0 0 0 / 0.78);
+}
+
+/* Lower while dragging, so the ink spreading underneath stays readable. */
+.cd[data-active] .cd__hints {
+  opacity: 0.4;
+  transition-duration: 120ms;
+}
+
+.cd[data-active] .cd__glint {
+  opacity: 1;
+  transition-duration: 100ms;
+}
+
+.cd[data-active] .cd__hex,
+.cd:focus-visible .cd__hex {
+  opacity: 1;
+  transition-duration: 120ms;
+}
+
+.cd:focus-visible .cd__hints {
+  opacity: 0.6;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .cd:hover .cd__hints {
+    opacity: 0.45;
+  }
+
+  .cd:hover .cd__hex {
+    opacity: 1;
+  }
+
+  .cd[data-active]:hover .cd__hints {
+    opacity: 0.4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cd__body {
+    will-change: auto;
+  }
+
+  .cd__glint {
+    display: none;
+  }
+}
