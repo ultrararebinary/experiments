@@ -16,6 +16,27 @@
         document.documentElement.dataset.theme = 'dark'
       }
     </script>
+    <script>
+      // GitHub Pages lets browsers keep index.html for 10 minutes, but each deploy deletes the
+      // previous build's files. If a kept copy asks for one of them, refresh that copy and
+      // reload. The timestamp stops a reload loop if the files are missing for another reason.
+      addEventListener(
+        'error',
+        (event) => {
+          const url = event.target?.src || event.target?.href
+          if (!url?.includes('/assets/')) return
+          try {
+            const last = Number(sessionStorage.getItem('stale-reload'))
+            if (Date.now() - last < 10000) return
+            sessionStorage.setItem('stale-reload', String(Date.now()))
+          } catch {
+            return
+          }
+          fetch(location.href, { cache: 'reload' }).finally(() => location.reload())
+        },
+        true,
+      )
+    </script>
   </head>
   <body>
     <div id="root"></div>

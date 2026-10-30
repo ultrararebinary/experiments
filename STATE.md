@@ -23,6 +23,7 @@ A public lab of small React UI components that anyone can copy, published at htt
 - Variants (2026-10-29, decision logged in `docs/decisions.md`): Yann found the first hover too faint. Three directions were prototyped behind a picker; he kept the keycap and the light. `key-light` runs the light at 45% so the two effects don't crowd the button. The prototype was deleted after integration.
 - Neutral base (2026-10-30, decisions logged in `docs/decisions.md`): the accent color on the shadows and on the base read as a glow, and the soft shadows made the button float. The base is now neutral gray and the soft shadows are gone.
 - Light and dark site themes (2026-10-30): a toggle stores the choice; without one, the site follows the device setting.
+- Stale index.html (2026-10-30): GitHub Pages lets browsers keep index.html for 10 minutes while each deploy deletes the old build's files, which gave a blank page. A script in `index.html` now refreshes the kept copy and reloads once. Tested against a local server that simulates the cache; it can't protect visitors holding a copy from before this script shipped.
 
 ## Verification (2026-10-29, local)
 
