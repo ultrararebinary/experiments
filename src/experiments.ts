@@ -28,6 +28,14 @@ const sources = import.meta.glob<string>(
 
 const folderOf = (path: string) => path.split('/')[2]
 
+// In UTC, so the month doesn't change with the visitor's time zone.
+export const formatDate = (date: string) =>
+  new Date(`${date}T00:00Z`).toLocaleDateString('en-US', {
+    month: 'short',
+    year: 'numeric',
+    timeZone: 'UTC',
+  })
+
 export const experiments: Experiment[] = Object.entries(demos)
   .map(([path, mod]) => {
     const slug = folderOf(path)

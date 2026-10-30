@@ -22,7 +22,7 @@ export default function Demo() {
         <p className="demo__hint">
           Press a dot, slide to a petal and let go. Pull the petal inward to lighten it, outward to darken it. Slide back to the center to cancel, or tap the dot to keep the ring open.
         </p>
-        <div className="demo__row" style={{ justifyContent: 'center', gap: '48px 180px', padding: '140px 0' }}>
+        <div className="demo__row" style={{ justifyContent: 'center', gap: '48px 140px', padding: '140px 0' }}>
           {sizes.map((size) => (
             <ColorBloom key={size} size={size} value={color} onChange={setColor} aria-label={`Color, ${size}`} />
           ))}

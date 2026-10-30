@@ -2,6 +2,8 @@
 
 Small UI experiments, free to copy. Each experiment is a React component with its own CSS file. There is no package to install: open the one you like, copy its files into your project and change whatever you want.
 
+I'm Yann, a student learning design engineering. I rebuild interface details here to understand why they feel right. You can find me on [X](https://x.com/yannworks).
+
 Live site: https://ultrararebinary.github.io/experiments/
 
 ## Copy a component

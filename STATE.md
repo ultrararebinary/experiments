@@ -12,6 +12,7 @@ A public lab of small React UI components that anyone can copy, published at htt
 - Hash routing (`#/glossy-button`): GitHub Pages always serves `index.html`, so a direct reload of an experiment page works with no 404 trick.
 - `experiments/glossy-button`: sizes `sm`/`md`/`lg`, tones `blue`/`violet`/`green`/`neutral`, any color through `--accent` (gradient and rim mixed with `color-mix()`; neutral base, one crisp edge, no soft shadow), optional `trailing` slot, three variants (`key` keycap by default, `light` with a cursor-following light, `key-light` with both and a softer light), press driven by a small hand-written spring, focus ring, disabled state, reduced motion, optional `shine`.
 - `experiments/color-drift` and `experiments/color-bloom` (2026-10-30): two color pickers, each in `sm`/`md`/`lg`, picked in OKLCH, returning a hex string. They replace the three-version `color-picker` from commit 9e15c9a; Tuner and the `/prototype` picker are gone.
+- Home and site redesign (2026-10-30, local, not pushed): a personal note above the live components, one 640 px column, one text size, warm neutrals, Inter Variable. `src/transition.ts` handles page and theme changes with the View Transitions API.
 - GitHub Actions workflow `.github/workflows/deploy.yml` (configure-pages, upload-pages-artifact, deploy-pages) on every push to `main`.
 
 ## Key choices
@@ -48,10 +49,21 @@ A public lab of small React UI components that anyone can copy, published at htt
 - Color Bloom, with a real held press through scripted events: petals spiral out and wear their own color within about 180 ms; the stem and the wave follow the pointer; the dot keeps its color until release, the value changes at once, the petal arrives in about 110 ms and the flood ends around 320 ms. Pressing during the flood finishes it and reopens from where the petals are. Back to the center cancels with no change. Keyboard opens, moves, confirms and cancels without animation; reduced motion forced gave fades only.
 - Both themes, focus ring by Tab, disabled state.
 
+## Verification of the redesign (2026-10-30, local)
+
+- `npm run build` with type check: passes. Dev and production build under `/experiments/`: home, every experiment page, direct reload, unknown route, zero console errors after the rapid navigation test, copy button (clipboard matched the code shown, button width stable).
+- Signature transition: paused and stepped at 40, 130 and 210 ms, home to Color Bloom. Six hash changes 16 ms apart and a longer mixed sequence: no duplicated name, the right page at the end. Stage names cleared afterwards.
+- Real mouse: dragging Color Drift in its stage changes the color and opens nothing, clicking beside it opens nothing, the title opens the page. With text selected, the row opens nothing. Scroll position and focus come back on return.
+- Keyboard: Tab focus ring, a recent key press skips the transition, focus moves to `main`.
+- No `startViewTransition`: the page changes directly. Reduced motion forced in the page: no stage name, no rise, root crossfade only (120 ms out, 200 ms in).
+- Both themes. Muted text contrast on light: 5.09:1 on the page, 4.75:1 on a stage. 320 and 375 px: no horizontal scroll after giving the preview stage narrower side padding. Font fallback: same heights, text width within 2 px.
+
 ## Open
 
-- Reduced motion was not tested with the real OS setting, and touch was not tested on a phone. This applies to all three experiments. Motion was measured with scripted pointer events; how it feels by hand is for Yann to judge.
+- Reduced motion was not tested with the real OS setting, and touch was not tested on a phone. This applies to the three experiments and to the site. Motion was measured with scripted pointer events and paused frames; how it feels by hand is for Yann to judge, ideally again the next day.
+- Not tested: the iOS swipe back, Alt+Left (the built-in browser doesn't send it), the press scale at normal speed (an instant synthetic click doesn't show it), the transition in Safari and Firefox.
+- The first deploy after this change fills in `og.png` at its public address. Check the X preview then.
 
 ## Next
 
-Start the next experiment with `NEW-EXPERIMENT.md`.
+Yann checks the redesign and decides whether to push. Then start the next experiment with `NEW-EXPERIMENT.md`.

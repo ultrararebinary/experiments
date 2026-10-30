@@ -92,3 +92,16 @@ Demandé par Yann : un color picker original et minimaliste, sans référence, a
 - `color-drift` : une surface qu'on fait glisser, horizontal pour la teinte, vertical pour le ton, avec de l'élan quand on la lance. La nouvelle couleur part du doigt et se diffuse vers les bords. La surface se déforme autour du point saisi et rebondit un peu seulement après un lancer.
 - `color-bloom` : un point qui s'ouvre sur 12 pétales. Ils sortent en spirale avec la couleur du point, puis prennent la leur. On glisse vers un pétale, tirer vers l'intérieur éclaircit, vers l'extérieur assombrit. Une tige relie le point au pétale. Au relâchement la couleur descend par la tige et remplit le point depuis ce côté. Le point garde son ancienne couleur tant qu'on n'a pas relâché, mais la valeur change dès le relâchement.
 - Exception assumée à la règle des 300 ms et à « transform et opacity seulement » : un color picker sert rarement et ces animations expliquent ce qui se passe. Le clavier reste sans animation et le mouvement réduit les retire.
+
+## Changement du 30 octobre 2026 : refonte de l'accueil et du site
+
+Demandé par Yann. Raison : l'accueil ne disait ni qui fait ce labo ni pourquoi, et le site ne bougeait pas alors que ses composants sont très travaillés. Il a demandé `emil-craft` et `grilling` en plus d'`emil-design-eng` et `apple-design` : sa demande explicite prime sur la liste de skills de `CLAUDE.md` pour ce chantier. Le wiki n'a pas de règle d'Emil sur la mise en page ou la couleur : ces choix suivent ce qui a été mesuré sur son portfolio, présenté comme une observation.
+
+- L'accueil est une note personnelle suivie des composants vivants. Cela remplace « page d'accueil sobre (nom, une phrase) » de la section Galerie. Yann signe « a student », avec X et GitHub : ni âge, ni pays, ni titre.
+- Une colonne d'environ 640 px sur toutes les pages, la plus récente en haut, date visible. Une seule taille de texte, hiérarchie à la graisse, neutres chauds, aucun accent, anneaux de 1 px au lieu de bordures.
+- Inter Variable hébergée avec la galerie seulement, avec une police de secours aux mêmes mesures. Les composants à copier n'en dépendent pas.
+- Sur l'accueil, la zone vivante sert à jouer et un clic à côté du composant ne fait rien. Seule la ligne en dessous ouvre la page. Cela remplace « un clic ouvre la page » de la section Galerie.
+- Une seule transition signature, par l'API View Transitions et sans dépendance : la zone vivante devient la zone de démo, 300 ms en `--ease-in-out`. Le clavier ne l'anime pas, le mouvement réduit garde un fondu, un navigateur sans l'API change de page directement.
+- Rejetés : entrée rejouée au retour sur l'accueil, révélation au défilement, effets au curseur sur le site, ressort sur le site.
+- Le thème est un mot dans la ligne de liens. Pas de pied de page.
+- L'écart du `demo.tsx` de Color Bloom passe de 180 à 140 px, pour que l'anneau de la grande taille reste dans la colonne.
