@@ -13,6 +13,7 @@ A public lab of small React UI components that anyone can copy, published at htt
 - `experiments/glossy-button`: sizes `sm`/`md`/`lg`, tones `blue`/`violet`/`green`/`neutral`, any color through `--accent` (gradient and rim mixed with `color-mix()`; neutral base, one crisp edge, no soft shadow), optional `trailing` slot, three variants (`key` keycap by default, `light` with a cursor-following light, `key-light` with both and a softer light), press driven by a small hand-written spring, focus ring, disabled state, reduced motion, optional `shine`.
 - `experiments/color-drift` and `experiments/color-bloom` (2026-10-30): two color pickers, each in `sm`/`md`/`lg`, picked in OKLCH, returning a hex string. They replace the three-version `color-picker` from commit 9e15c9a; Tuner and the `/prototype` picker are gone.
 - Home and site redesign (2026-10-30, local, not pushed): a personal note above the live components, one 640 px column, one text size, warm neutrals, Inter Variable. `src/transition.ts` handles page and theme changes with the View Transitions API.
+- README with previews (2026-10-30): a hero picture and one picture per experiment in `docs/readme/`, in both themes, made by `npm run readme`. The list in `README.md` between the markers is generated; edit `demo.tsx` meta, not the list.
 - GitHub Actions workflow `.github/workflows/deploy.yml` (configure-pages, upload-pages-artifact, deploy-pages) on every push to `main`.
 
 ## Key choices

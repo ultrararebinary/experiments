@@ -27,4 +27,5 @@ For design and motion, use only `emil-design-eng` and `apple-design` (in `/Users
 3. Check every state in every variant, on both the dark and light themes: hover, press, keyboard focus (Tab), disabled, any options, and `prefers-reduced-motion`. Look at zoomed captures of the hover state, because reading computed styles can miss a visual problem. A screenshot does not prove an animation: measure transforms at several moments, and test interrupted and rapid interactions.
 4. The console shows zero errors.
 5. `npm run build && npm run preview` serves the build under `/experiments/`, as GitHub Pages does. Check it there too.
-6. Nothing goes online without a push to `main`, and nothing is pushed without Yann's go-ahead.
+6. After adding or changing an experiment, run `npm run readme`: it rebuilds the previews in `docs/readme/` and the list in `README.md` from each `demo.tsx` `meta`. Look at the new pictures, and commit them with the change. The script only knows how to show a preview at rest; one that must be pressed to make sense needs an entry in `HOLD` in `scripts/readme.mjs`.
+7. Nothing goes online without a push to `main`, and nothing is pushed without Yann's go-ahead.
