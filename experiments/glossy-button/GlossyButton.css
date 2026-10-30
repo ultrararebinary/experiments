@@ -1,6 +1,7 @@
 /*
- * Glossy button. Every color on the button is mixed from one value, --accent.
- * Its outer shadows stay black, so they look the same whatever the color.
+ * Glossy button. The colors of the face are mixed from one value, --accent.
+ * The base and the edge under the button stay neutral, so no color spills
+ * onto the page around it.
  *
  * The <button> is a frame. Inside it, .gb__face is the visible button. The key
  * variants add .gb__base under the face, offset down by --_h: the strip of base
@@ -15,8 +16,6 @@
   --_top: color-mix(in oklab, var(--_accent), white 20%);
   --_bottom: color-mix(in oklab, var(--_accent), black 4%);
   --_rim: color-mix(in oklab, var(--_accent), black 30%);
-  --_side: color-mix(in oklab, var(--_accent), black 42%);
-  --_side-top: color-mix(in oklab, var(--_accent), black 28%);
   --_shadow: color-mix(in oklab, var(--_accent), black 55%);
   --_ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --gb-press: 0;
@@ -81,27 +80,15 @@
 .gb[data-tone='green'] { --accent: #13804a; }
 .gb[data-tone='neutral'] { --accent: #26262b; }
 
-/* Base: the side of the keycap, and the shadows it casts. */
+/* Base: the side of the keycap. Neutral, with one crisp edge and no soft shadow. */
 .gb__base {
   position: absolute;
   inset: var(--_h) 0 0;
   border-radius: inherit;
-  background: linear-gradient(to bottom, var(--_side-top), var(--_side));
+  background: linear-gradient(to bottom, #3a3a40, #26262a);
   box-shadow:
     inset 0 -1px 0 0 rgb(0 0 0 / 0.25),
-    0 1px 2px rgb(0 0 0 / 0.35),
-    0 4px 10px -2px rgb(0 0 0 / 0.35);
-}
-
-/* The longer shadow of a raised face. Fades in on hover. */
-.gb__base::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  box-shadow: 0 12px 24px -10px rgb(0 0 0 / 0.55);
-  opacity: 0;
-  transition: opacity 160ms ease;
+    0 1px 0 rgb(0 0 0 / 0.2);
 }
 
 .gb__face {
@@ -133,14 +120,13 @@
 .gb[data-size='sm'] .gb__face { height: 32px; padding: 0 12px; }
 .gb[data-size='lg'] .gb__face { height: 48px; padding: 0 22px; }
 
-/* Without a base, the face casts its own shadow, which tightens as it goes down. */
+/* Without a base, the face has its own crisp edge. A press moves and shrinks it. */
 .gb[data-variant='light'] .gb__face {
   box-shadow:
     inset 0 1px 0 0 rgb(255 255 255 / 0.32),
     inset 0 0 0 1px color-mix(in srgb, var(--_top) 60%, transparent),
     inset 0 -1px 0 0 color-mix(in srgb, var(--_shadow) 30%, transparent),
-    0 calc(1px + (1 - var(--gb-press)) * 1px) calc(1px + (1 - var(--gb-press)) * 2px) rgb(0 0 0 / 0.35),
-    0 calc((1 - var(--gb-press)) * 4px + 1px) calc((1 - var(--gb-press)) * 10px + 2px) -2px rgb(0 0 0 / 0.35);
+    0 1px 0 rgb(0 0 0 / 0.25);
   transform: translateY(calc(var(--gb-press) * var(--_depth)))
     scale(calc(1 - var(--gb-press) * 0.03));
 }
@@ -248,7 +234,7 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  /* Keycap: the face rises off its base and its shadow lengthens. */
+  /* Keycap: the face rises off its base and shows more of its side. */
   .gb:not([data-variant='light']):hover:not(:disabled) {
     --_travel: calc(var(--_h) + var(--_lift));
   }
@@ -256,16 +242,6 @@
   .gb:hover:not(:disabled) .gb__face {
     translate: 0 calc(var(--_lift) * -1);
     transition-duration: 220ms;
-  }
-
-  .gb:hover:not(:disabled) .gb__base::after {
-    opacity: 1;
-    transition-duration: 220ms;
-  }
-
-  .gb[data-pressed]:hover .gb__base::after {
-    opacity: 0.2;
-    transition-duration: 100ms;
   }
 
   .gb:hover:not(:disabled) .gb__glow {

@@ -74,3 +74,12 @@ Demandé par Yann. Raison : les ombres extérieures reprenaient la couleur du bo
 
 - Les ombres extérieures des trois variantes sont noires, avec les mêmes formes qu'avant.
 - `--accent` règle toujours le dégradé, le bord et le socle, mais plus les ombres extérieures. Cela remplace « Le relief (dégradé, reflet, ombres) se calcule à partir de cette seule couleur » dans la section de la première expérience.
+
+## Changement du 30 octobre 2026 : socle neutre et mode clair
+
+Demandé par Yann. Raison : après le passage aux ombres noires, il voyait encore une bande de la couleur du bouton dessous, surtout au survol, et le bouton semblait flotter au lieu de paraître collé à la page. Cette bande était le socle, qui prenait encore la couleur de `--accent`. Quatre états ont été comparés sur fonds sombre et clair : actuel, socle neutre, socle fin, sans socle. Yann a choisi le socle neutre.
+
+- Le socle de `key` et `key-light` est gris neutre pour toutes les couleurs. L'épaisseur, la montée au survol et le clic ne changent pas.
+- Les ombres floues et la grande ombre du survol sont retirées sur les trois variantes. Il reste une arête nette de 1 px sous le bouton.
+- `--accent` règle le dégradé et le bord de la face. Cela remplace la mention du socle dans la décision « ombres neutres » du même jour.
+- Le site a un mode sombre et un mode clair, avec un bouton qui retient le choix. Sans choix enregistré, il suit le réglage de l'appareil.

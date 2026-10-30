@@ -46,11 +46,11 @@ It renders a real `<button>` and passes every native prop through (`disabled`, `
 
 ## How it works
 
-The CSS mixes every shade on the button from `--accent` with `color-mix()`: the light top of the gradient, the darker rim and the side of the base. Change one value and they all follow. The shadows outside the button are plain black, so a color never adds a glow around it.
+The CSS mixes the colors of the face from `--accent` with `color-mix()`: the light top of the gradient and the darker rim. Change one value and they follow. The base and the edge under the button stay neutral, with no soft shadow, so the color stays on the button and it sits on the page without floating.
 
-Inside the `<button>`, `.gb__face` is the part you see. The key variants put a darker `.gb__base` under it, shifted down by 2 to 4 px depending on the size. That strip of base below the face is the button's thickness. On hover the face rises 1.5 to 2.5 px and a longer shadow fades in under the base, so you see more of the side.
+Inside the `<button>`, `.gb__face` is the part you see. The key variants put a neutral gray `.gb__base` under it, shifted down by 2 to 4 px depending on the size. That strip of base below the face is the button's thickness. On hover the face rises 1.5 to 2.5 px, so you see more of the side.
 
-The press is a small spring written in about forty lines, so there is no animation library. It writes `--gb-press`, a number between 0 and 1, and the CSS turns that into movement. On the key variants the face slides down until it sits flush with its base. On `light` there is no base: the face moves down 1 to 2 px, shrinks to 97% and its shadow tightens. In both cases the face darkens. Going down uses a critically damped spring that gets there in about 0.1 s. Coming back up uses a softer one (damping 0.55, response 0.32 s), which overshoots slightly before settling.
+The press is a small spring written in about forty lines, so there is no animation library. It writes `--gb-press`, a number between 0 and 1, and the CSS turns that into movement. On the key variants the face slides down until it sits flush with its base. On `light` there is no base: the face moves down 1 to 2 px and shrinks to 97%. In both cases the face darkens. Going down uses a critically damped spring that gets there in about 0.1 s. Coming back up uses a softer one (damping 0.55, response 0.32 s), which overshoots slightly before settling.
 
 The spring keeps its position and speed between targets. If you let go halfway through a press, the button starts back up from where it is, with the speed it had, and fast repeated clicks never make it jump. A trackpad tap can press and release within a single frame, so the button stays down for at least 70 ms. Only the animation waits; the click fires right away.
 

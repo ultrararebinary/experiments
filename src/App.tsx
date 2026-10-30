@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { experiments } from './experiments'
 import { Home } from './Home'
 import { ExperimentPage } from './ExperimentPage'
+import { ThemeToggle } from './ThemeToggle'
 
 // Routes live after the # (…/experiments/#/glossy-button), so GitHub Pages always
 // serves index.html and a direct reload of any page works.
@@ -27,13 +28,20 @@ export function App() {
     document.title = experiment ? `${experiment.title} · experiments` : 'experiments'
   }, [experiment])
 
-  if (path === '/') return <Home />
-  if (experiment) return <ExperimentPage experiment={experiment} />
   return (
-    <main className="page">
-      <a className="back" href="#/">All experiments</a>
-      <h1 className="page__title">Nothing here</h1>
-      <p className="page__lead">There is no experiment at this address.</p>
-    </main>
+    <>
+      <ThemeToggle />
+      {path === '/' ? (
+        <Home />
+      ) : experiment ? (
+        <ExperimentPage experiment={experiment} />
+      ) : (
+        <main className="page">
+          <a className="back" href="#/">All experiments</a>
+          <h1 className="page__title">Nothing here</h1>
+          <p className="page__lead">There is no experiment at this address.</p>
+        </main>
+      )}
+    </>
   )
 }
