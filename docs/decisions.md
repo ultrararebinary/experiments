@@ -83,3 +83,14 @@ Demandé par Yann. Raison : après le passage aux ombres noires, il voyait encor
 - Les ombres floues et la grande ombre du survol sont retirées sur les trois variantes. Il reste une arête nette de 1 px sous le bouton.
 - `--accent` règle le dégradé et le bord de la face. Cela remplace la mention du socle dans la décision « ombres neutres » du même jour.
 - Le site a un mode sombre et un mode clair, avec un bouton qui retient le choix. Sans choix enregistré, il suit le réglage de l'appareil.
+
+## Deuxième expérience : color picker (30 octobre 2026)
+
+Demandé par Yann : un color picker original et minimaliste, sans référence, trois versions avec animations fluides et trois tailles chacune, rien de générique. Il a demandé `/prototype` pour les concevoir, alors que `CLAUDE.md` limite les skills de design : sa demande explicite prime pour cette expérience.
+
+- Dossier `experiments/color-picker`, composant `ColorPicker` avec `variant` (`drift`, `tuner`, `bloom`) et `size` (`sm`, `md`, `lg`).
+- `drift` : une seule surface remplie de la couleur. On la fait glisser : horizontal pour la teinte, vertical pour le ton, avec de l'élan quand on la lance.
+- `tuner` : une rangée de fines lignes sous une aiguille fixe, comme un cadran de radio. Glisser à l'horizontale règle la teinte, à la verticale le ton, et l'élan s'arrête sur la ligne la plus proche.
+- `bloom` : un point qui s'ouvre en anneau de pétales. On appuie, on glisse vers un pétale, on relâche. Tirer le pétale vers l'intérieur éclaircit, vers l'extérieur assombrit.
+- Les couleurs sont choisies en OKLCH et le composant renvoie un hex.
+- Les trois versions restent dans le composant, puisque Yann les a demandées toutes les trois. Le sélecteur du skill `/prototype` reste dans `demo.tsx` tant qu'il n'a pas dit lesquelles garder.

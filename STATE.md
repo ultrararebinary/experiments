@@ -11,6 +11,7 @@ A public lab of small React UI components that anyone can copy, published at htt
 - Gallery app (Vite 8, React 19, TypeScript 7, plain CSS) with a home grid of live previews and one page per experiment: all variants, code tabs with a copy button, README notes.
 - Hash routing (`#/glossy-button`): GitHub Pages always serves `index.html`, so a direct reload of an experiment page works with no 404 trick.
 - `experiments/glossy-button`: sizes `sm`/`md`/`lg`, tones `blue`/`violet`/`green`/`neutral`, any color through `--accent` (gradient and rim mixed with `color-mix()`; neutral base, one crisp edge, no soft shadow), optional `trailing` slot, three variants (`key` keycap by default, `light` with a cursor-following light, `key-light` with both and a softer light), press driven by a small hand-written spring, focus ring, disabled state, reduced motion, optional `shine`.
+- `experiments/color-picker` (2026-10-30, committed locally, not pushed): variants `drift`, `tuner` and `bloom`, each in `sm`/`md`/`lg`, picked in OKLCH, returning a hex string. The demo keeps the `/prototype` picker until Yann says which versions stay.
 - GitHub Actions workflow `.github/workflows/deploy.yml` (configure-pages, upload-pages-artifact, deploy-pages) on every push to `main`.
 
 ## Key choices
@@ -40,10 +41,18 @@ A public lab of small React UI components that anyone can copy, published at htt
 - Live site checked in the built-in browser: home, live button press (peak 0.88, overshoot about -0.10), hover lift, card click, direct reload of `#/glossy-button`, copy button (clipboard matched the file), zero console errors.
 - Workflow annotation to watch: GitHub runs the v4/v5 actions on Node 24 because Node 20 is deprecated. It works today; bump the action versions when new majors are out.
 
+## Verification of the color picker (2026-10-30, local)
+
+- `npm run build` with type check: passes. Dev and production build under `/experiments/`: home card, card click, direct reload, copy button (copied text matched the code shown, clipboard write intercepted), zero console errors, no horizontal scroll at 375 px.
+- Real mouse input on all three variants: Drift drag and flick, with a grab during the coast stopping the hue where it was; Tuner tap, scrub and tone drag, landing on a tick; Bloom tap, hover, pick, drag and release, close from the center without a change.
+- Keyboard: Tab focus ring, arrows on Drift and Tuner with no animation, Bloom open, move, tone, Escape restoring the color, Enter confirming. Disabled state on all three. Dark and light themes.
+- Reduced motion forced in the page: no coast or stretch on Drift, instant landing on Tuner, Bloom without travel or stagger.
+
 ## Open
 
-- Reduced motion was not tested with the real OS setting, and touch was not tested on a phone.
+- Reduced motion was not tested with the real OS setting, and touch was not tested on a phone. This applies to both experiments. The Bloom press-and-hold was only driven by an instant tool drag; a slow human hold has not been measured.
+- Yann has not yet said which color picker versions stay, or whether the `/prototype` picker stays in the demo.
 
 ## Next
 
-Start the next experiment with `NEW-EXPERIMENT.md`.
+Show Yann the color picker, then push on his go-ahead. Start the next experiment with `NEW-EXPERIMENT.md`.
