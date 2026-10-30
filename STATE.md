@@ -1,6 +1,6 @@
 # State
 
-Last updated: 2026-10-29.
+Last updated: 2026-10-30.
 
 ## Goal
 
@@ -10,7 +10,7 @@ A public lab of small React UI components that anyone can copy, published at htt
 
 - Gallery app (Vite 8, React 19, TypeScript 7, plain CSS) with a home grid of live previews and one page per experiment: all variants, code tabs with a copy button, README notes.
 - Hash routing (`#/glossy-button`): GitHub Pages always serves `index.html`, so a direct reload of an experiment page works with no 404 trick.
-- `experiments/glossy-button`: sizes `sm`/`md`/`lg`, tones `blue`/`violet`/`green`/`neutral`, any color through `--accent` (relief mixed with `color-mix()`), optional `trailing` slot, three variants (`key` keycap by default, `light` with a cursor-following light, `key-light` with both and a softer light), press driven by a small hand-written spring, focus ring, disabled state, reduced motion, optional `shine`.
+- `experiments/glossy-button`: sizes `sm`/`md`/`lg`, tones `blue`/`violet`/`green`/`neutral`, any color through `--accent` (gradient, rim and base mixed with `color-mix()`, outer shadows in neutral black), optional `trailing` slot, three variants (`key` keycap by default, `light` with a cursor-following light, `key-light` with both and a softer light), press driven by a small hand-written spring, focus ring, disabled state, reduced motion, optional `shine`.
 - GitHub Actions workflow `.github/workflows/deploy.yml` (configure-pages, upload-pages-artifact, deploy-pages) on every push to `main`.
 
 ## Key choices
@@ -21,6 +21,7 @@ A public lab of small React UI components that anyone can copy, published at htt
 - Default blue is `#1a70e6`, slightly deeper than the reference so white text reaches about 4.6:1 contrast.
 
 - Variants (2026-10-29, decision logged in `docs/decisions.md`): Yann found the first hover too faint. Three directions were prototyped behind a picker; he kept the keycap and the light. `key-light` runs the light at 45% so the two effects don't crowd the button. The prototype was deleted after integration.
+- Neutral shadows (2026-10-30, decision logged in `docs/decisions.md`): the outer shadows used to take the accent color, which made a glow Yann found cheap. They are now black, with the same shapes.
 
 ## Verification (2026-10-29, local)
 

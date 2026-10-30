@@ -1,5 +1,6 @@
 /*
- * Glossy button. Every color in the relief is mixed from one value, --accent.
+ * Glossy button. Every color on the button is mixed from one value, --accent.
+ * Its outer shadows stay black, so they look the same whatever the color.
  *
  * The <button> is a frame. Inside it, .gb__face is the visible button. The key
  * variants add .gb__base under the face, offset down by --_h: the strip of base
@@ -88,8 +89,8 @@
   background: linear-gradient(to bottom, var(--_side-top), var(--_side));
   box-shadow:
     inset 0 -1px 0 0 rgb(0 0 0 / 0.25),
-    0 1px 2px color-mix(in srgb, var(--_shadow) 50%, transparent),
-    0 4px 10px -2px color-mix(in srgb, var(--_accent) 35%, transparent);
+    0 1px 2px rgb(0 0 0 / 0.35),
+    0 4px 10px -2px rgb(0 0 0 / 0.35);
 }
 
 /* The longer shadow of a raised face. Fades in on hover. */
@@ -98,7 +99,7 @@
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  box-shadow: 0 12px 24px -10px color-mix(in srgb, var(--_accent) 70%, transparent);
+  box-shadow: 0 12px 24px -10px rgb(0 0 0 / 0.55);
   opacity: 0;
   transition: opacity 160ms ease;
 }
@@ -138,10 +139,8 @@
     inset 0 1px 0 0 rgb(255 255 255 / 0.32),
     inset 0 0 0 1px color-mix(in srgb, var(--_top) 60%, transparent),
     inset 0 -1px 0 0 color-mix(in srgb, var(--_shadow) 30%, transparent),
-    0 calc(1px + (1 - var(--gb-press)) * 1px) calc(1px + (1 - var(--gb-press)) * 2px)
-      color-mix(in srgb, var(--_shadow) 45%, transparent),
-    0 calc((1 - var(--gb-press)) * 4px + 1px) calc((1 - var(--gb-press)) * 10px + 2px) -2px
-      color-mix(in srgb, var(--_accent) 35%, transparent);
+    0 calc(1px + (1 - var(--gb-press)) * 1px) calc(1px + (1 - var(--gb-press)) * 2px) rgb(0 0 0 / 0.35),
+    0 calc((1 - var(--gb-press)) * 4px + 1px) calc((1 - var(--gb-press)) * 10px + 2px) -2px rgb(0 0 0 / 0.35);
   transform: translateY(calc(var(--gb-press) * var(--_depth)))
     scale(calc(1 - var(--gb-press) * 0.03));
 }

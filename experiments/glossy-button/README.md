@@ -46,7 +46,7 @@ It renders a real `<button>` and passes every native prop through (`disabled`, `
 
 ## How it works
 
-The CSS mixes every shade from `--accent` with `color-mix()`: the light top of the gradient, the darker rim, the shadow color and the colored glow under the button. Change one value and the whole relief follows.
+The CSS mixes every shade on the button from `--accent` with `color-mix()`: the light top of the gradient, the darker rim and the side of the base. Change one value and they all follow. The shadows outside the button are plain black, so a color never adds a glow around it.
 
 Inside the `<button>`, `.gb__face` is the part you see. The key variants put a darker `.gb__base` under it, shifted down by 2 to 4 px depending on the size. That strip of base below the face is the button's thickness. On hover the face rises 1.5 to 2.5 px and a longer shadow fades in under the base, so you see more of the side.
 

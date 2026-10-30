@@ -67,3 +67,10 @@ Demandé par Yann après la première mise en ligne. Raison : le survol d'origin
 - `light` : face plate et brillante comme la référence. Au survol, une lumière douce suit le curseur et le bord s'éclaire de son côté. Le bouton ne bouge pas au survol ; le clic reste celui d'origine.
 - `key-light` : la touche avec une lumière plus discrète (45 % de l'intensité de `light`), parce que les deux effets à pleine force chargeaient trop le bouton.
 - Ces trois variantes remplacent la ligne « Survol » de la première expérience. Le reste (tailles, teintes, clic, focus, désactivé, mouvement réduit, option `shine`) ne change pas.
+
+## Changement du 30 octobre 2026 : ombres neutres
+
+Demandé par Yann. Raison : les ombres extérieures reprenaient la couleur du bouton et créaient un petit glow qui changeait selon la teinte, ce qui donnait un effet un peu cheap. Trois modes ont été comparés sur fonds sombre et clair : avec glow, sans glow, ombre neutre. Yann a choisi l'ombre neutre.
+
+- Les ombres extérieures des trois variantes sont noires, avec les mêmes formes qu'avant.
+- `--accent` règle toujours le dégradé, le bord et le socle, mais plus les ombres extérieures. Cela remplace « Le relief (dégradé, reflet, ombres) se calcule à partir de cette seule couleur » dans la section de la première expérience.

@@ -3,7 +3,7 @@ import { GlossyButton, type GlossyButtonProps } from './GlossyButton'
 
 export const meta = {
   title: 'Glossy button',
-  description: 'A raised button lit from above, in three variants. One accent color drives the whole relief.',
+  description: 'A raised button lit from above, in three variants. One accent color drives the gradient, rim and base.',
   date: '2026-10-29',
 }
 
@@ -74,7 +74,7 @@ export default function Demo() {
       <section className="demo__section">
         <h3>Your own color</h3>
         <p className="demo__hint">
-          Set <code>--accent</code> and the gradient, rim, base and shadows follow.
+          Set <code>--accent</code> and the gradient, rim and base follow.
         </p>
         <div className="demo__row">
           {['#e8590c', '#d6336c', '#0c8599'].map((accent) => (
