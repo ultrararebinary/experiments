@@ -32,9 +32,9 @@ export function Home() {
       </div>
 
       <nav className="links" aria-label="Links">
-        <a className="text-control" href={X}>X</a>
+        <a className="text-control" href={X} target="_blank" rel="noopener noreferrer">X</a>
         <span className="links__dot" aria-hidden="true">·</span>
-        <a className="text-control" href={REPO}>GitHub</a>
+        <a className="text-control" href={REPO} target="_blank" rel="noopener noreferrer">GitHub</a>
         <span className="links__dot" aria-hidden="true">·</span>
         <ThemeToggle />
       </nav>

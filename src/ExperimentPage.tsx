@@ -6,8 +6,12 @@ import { ThemeToggle } from './ThemeToggle'
 export function ExperimentPage({ experiment }: { experiment: Experiment }) {
   const { title, description, date, Demo, files, readme, slug } = experiment
   // The page already shows the title, so the README's first heading is dropped.
+  // Links to other sites open in a new tab, so the visitor keeps their place in the gallery.
   const notes = useMemo(
-    () => marked.parse(readme.replace(/^#\s.*\n/, ''), { async: false }),
+    () =>
+      marked
+        .parse(readme.replace(/^#\s.*\n/, ''), { async: false })
+        .replace(/<a href="(https?:)/g, '<a target="_blank" rel="noopener noreferrer" href="$1'),
     [readme],
   )
   const index = experiments.indexOf(experiment)
