@@ -99,6 +99,8 @@ const png = async (page, clip, file) => {
   const { data } = await page.send('Page.captureScreenshot', {
     format: 'png',
     clip: { ...clip, scale: 1 },
+    // Previews further down than the view's height came out empty without this.
+    captureBeyondViewport: true,
   })
   await writeFile(file, Buffer.from(data, 'base64'))
 }

@@ -1,6 +1,6 @@
 # State
 
-Last updated: 2026-10-30.
+Last updated: 2026-11-07.
 
 ## Goal
 
@@ -14,6 +14,7 @@ A public lab of small React UI components that anyone can copy, published at htt
 - `experiments/color-drift` and `experiments/color-bloom` (2026-10-30): two color pickers, each in `sm`/`md`/`lg`, picked in OKLCH, returning a hex string. They replace the three-version `color-picker` from commit 9e15c9a; Tuner and the `/prototype` picker are gone.
 - Home and site redesign (2026-10-30, published): a personal note above the live components, one 640 px column, one text size, warm neutrals, Inter Variable. `src/transition.ts` handles page and theme changes with the View Transitions API.
 - `experiments/shoji-bento` (2026-10-30): a bento grid made of thin lines, in three sizes of 3, 5 and 7 compartments. Drag a line and the compartments make room, with type that follows its room. It is the `seam` version kept from three prototypes; `tray` and `dive` are gone.
+- `experiments/gem-clip` (2026-11-07): a copy control for a block of text. A paper clip on the top edge opens as it slides on, snaps shut on the block and holds while it says "Copied". Three sizes. Kept from two rounds of prototypes (first Lift, Clip and Tear, then the Pince, Glisse and Clac motions); the others are gone. The clip was drawn from a Codex image kept in `docs/references/gem-clip-paperclip.png`.
 - README with previews (2026-10-30): a hero picture and one picture per experiment in `docs/readme/`, in both themes, made by `npm run readme`. The list in `README.md` between the markers is generated; edit `demo.tsx` meta, not the list.
 - GitHub Actions workflow `.github/workflows/deploy.yml` (configure-pages, upload-pages-artifact, deploy-pages) on every push to `main`.
 
@@ -68,6 +69,13 @@ A public lab of small React UI components that anyone can copy, published at htt
 - Found and fixed during this check: at a T junction the child line sat on top of the line running through, and at 320 px the main line of the largest size couldn't move. The minimum compartment went from 64 to 56 px and the through line now wins.
 - `prefers-reduced-motion` emulated in Chrome: no lean, no animated transform on the line; a drag still follows, a release goes straight to its place and a press changes at once.
 - 375 and 320 px with touch emulated: no horizontal scroll, the hit area is 32 px, a touch drag moves the line and doesn't scroll the page.
+
+## Verification of Gem Clip (2026-11-07, local)
+
+- `npm run build` with type check: passes. Dev and production build under `/experiments/`: home, title click, direct reload, copy button (clipboard matched the code shown), zero console errors, no horizontal scroll at 320 px.
+- Motion sampled with the page clock paused: the clip opens about 14% while it slides, is on in about 150 ms, closes with a ring that settles by 400 ms, and the block dips about 1.4 px. Letting go takes about 200 ms with no overshoot. Rapid clicks restart nothing; a click while it lets go grips again from where it is, at most about 3 px per frame.
+- Found and fixed during this check: `npm run readme` captured empty pictures for previews below the 2000 px view (Glossy Button, now fifth). The capture now passes `captureBeyondViewport`; the unchanged previews were left as they were.
+- Keyboard: Tab shows the ring, Enter puts the clip in place at once with no running animation. Disabled: default cursor, no copy. Reduced motion forced in the page: no travel, no spread, no dip, only the note fades. Both themes.
 
 ## Open
 

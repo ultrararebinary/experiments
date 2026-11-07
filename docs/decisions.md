@@ -126,3 +126,18 @@ Demandé par Yann après avoir essayé les trois versions sur le serveur de dév
 - Le dossier devient `experiments/shoji-bento` (`ShojiBento`), sans prop `variant` ni sélecteur de prototypage. Cela remplace le dossier `bento-grid`, les trois valeurs de `variant` et le sélecteur de la section précédente. Le reste de `seam` ne change pas.
 - `meta` accepte un `order` optionnel : à date égale, le plus grand passe devant. Raison : l'accueil montre la plus récente en haut, et le tri alphabétique plaçait Shoji Bento en troisième position parmi les trois expériences du jour.
 - Règle de méthode, qui vaut pour la suite : avec `/prototype`, trois versions sont conçues et laissées sur le serveur de développement, sans préparer de commit. Yann choisit directement là. Le commit vient après son choix. Raison : le premier commit contenait les trois versions avant qu'il ait choisi, et il a fallu le refaire. Détail dans `CLAUDE.md`, section Prototypes.
+
+## Cinquième expérience : Gem Clip (7 novembre 2026)
+
+Demandé par Yann : un composant de copie original et minimaliste, sans référence, sans les boutons « copier / copié » habituels, conçu en trois versions avec `/prototype`, chacune en trois tailles, et en se servant de `codex-image`. Il a demandé `emil-craft` en plus d'`emil-design-eng` et `apple-design` : sa demande explicite prime sur la liste de skills de `CLAUDE.md` pour cette expérience.
+
+- Premier tour : trois façons de copier, chacune pour un usage. `lift` (la valeur dans une phrase est le bouton), `clip` (un trombone pince un bloc), `tear` (on arrache le talon d'un ticket). Yann a gardé `clip`, qu'il trouve le plus beau.
+- Deuxième tour, demandé par Yann après des captures de l'animation : trois façons pour le trombone de se poser. Pince (il s'ouvre en glissant et se referme sur le bloc), Glisse (il arrive penché et se redresse), Clac (il se lève, tombe et s'écrase un instant). Yann a gardé Pince.
+- Raison du deuxième tour, d'après la revue des captures : le trombone descendait comme un ascenseur, le bloc ne réagissait pas, « Copied » apparaissait avant le trombone et trop loin de lui, et le relâchement était aussi lent que la prise.
+- Dossier `experiments/gem-clip` (`GemClip`), en `sm`, `md`, `lg`, sans prop de variante. Raison du nom : « Gem » est le nom du modèle classique de trombone à deux boucles, celui du dessin.
+- Le trombone vient d'une image générée par Codex (`docs/references/gem-clip-paperclip.png`), redessinée en deux tracés SVG. Le tracé complet passe derrière le bloc et la boucle extérieure devant, pour que le bloc paraisse pincé.
+- Curseur : la main (`pointer`), comme les autres boutons du labo. Yann n'aimait pas le curseur `copy` (flèche avec un « + » vert) de la première version.
+- « Copied » s'affiche dès le clic, petit et collé au trombone, une fois le trombone posé. Il passe à « Couldn't copy » si l'écriture échoue.
+- Le relâchement prend environ 200 ms sans rebond, plus vite que la prise. Le clavier pose le trombone sans animation et le mouvement réduit ne garde qu'un fondu.
+- Shoji Bento affiche maintenant 5 expériences au lieu de 4.
+- Rejetés avec `lift` et `tear` : le curseur `copy`, et un rebond de position à l'arrivée, remplacé par l'ouverture puis la fermeture du trombone.

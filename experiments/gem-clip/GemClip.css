@@ -1,0 +1,176 @@
+.gem-clip {
+  --gem-clip-fg: light-dark(#21201c, #eeeeec);
+  --gem-clip-bg: light-dark(#fdfdfc, #111110);
+  --gem-clip-muted: color-mix(in oklab, var(--gem-clip-fg) 55%, transparent);
+  --gem-clip-line: color-mix(in oklab, var(--gem-clip-fg) 14%, transparent);
+  --gem-clip-ease: cubic-bezier(0.23, 1, 0.32, 1);
+  --clip-height: 2.5em;
+  --clip-right: 1.25em;
+
+  position: relative;
+  display: block;
+  width: min(100%, 34em);
+  padding-top: calc(var(--clip-height) * 0.62);
+  color: var(--gem-clip-fg);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.gem-clip[data-size='sm'] {
+  font-size: 0.8125rem;
+}
+
+.gem-clip[data-size='md'] {
+  font-size: 0.9375rem;
+}
+
+.gem-clip[data-size='lg'] {
+  font-size: 1.125rem;
+}
+
+.gem-clip[data-disabled] {
+  opacity: 0.5;
+}
+
+/* A keyboard copy shows its result at once. */
+.gem-clip[data-instant] * {
+  transition: none !important;
+}
+
+.gem-clip__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.gem-clip__block {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 1em calc(var(--clip-right) + 2em) 1em 1.1em;
+  border-radius: 0.6em;
+  background: var(--gem-clip-bg);
+  box-shadow: inset 0 0 0 1px var(--gem-clip-line);
+  font: 0.9em/1.6 ui-monospace, 'SF Mono', Menlo, monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.gem-clip__clip {
+  position: absolute;
+  top: 0;
+  right: var(--clip-right);
+  display: block;
+  margin: -0.4em -0.6em;
+  padding: 0.4em 0.6em;
+  border: 0;
+  border-radius: 0.4em;
+  background: none;
+  color: var(--gem-clip-muted);
+  font: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition:
+    color 200ms ease,
+    transform 160ms var(--gem-clip-ease);
+}
+
+.gem-clip__clip:disabled {
+  cursor: default;
+}
+
+.gem-clip__clip:focus-visible {
+  outline: 2px solid var(--gem-clip-fg);
+  outline-offset: 2px;
+}
+
+.gem-clip__clip--back {
+  z-index: 0;
+  pointer-events: none;
+}
+
+.gem-clip__clip--front {
+  z-index: 2;
+}
+
+.gem-clip:not([data-status='idle']) .gem-clip__clip {
+  color: var(--gem-clip-fg);
+}
+
+/* Its own font size is the clip's height, so the spring can move it in clip heights. */
+.gem-clip__clip-body {
+  display: block;
+  font-size: var(--clip-height);
+  line-height: 0;
+}
+
+.gem-clip__clip-body svg {
+  width: 0.4em;
+  height: 1em;
+  stroke-width: 1.5px;
+  overflow: visible;
+}
+
+.gem-clip[data-size='lg'] .gem-clip__clip-body svg {
+  stroke-width: 1.75px;
+}
+
+/* Pressing pushes it toward the block, the way it is about to go. */
+.gem-clip:has(.gem-clip__clip--front:active:not(:disabled)) .gem-clip__clip {
+  transform: translateY(0.18em);
+}
+
+/* The note sits right beside the clip, on the edge it grips, and arrives once the clip is on. */
+.gem-clip__note {
+  position: absolute;
+  top: calc(var(--clip-height) * 0.62 - 1.45em);
+  right: calc(var(--clip-right) + 1.45em);
+  color: var(--gem-clip-muted);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(0.25em);
+  transition:
+    opacity 120ms ease,
+    transform 120ms var(--gem-clip-ease);
+}
+
+.gem-clip__note span {
+  font-size: 0.8125em;
+}
+
+.gem-clip:not([data-status='idle']) .gem-clip__note {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 180ms ease 140ms,
+    transform 220ms var(--gem-clip-ease) 140ms;
+}
+
+/* Touch fires false hovers on tap, so hover only exists with a real pointer. */
+@media (hover: hover) and (pointer: fine) {
+  .gem-clip__clip--front:hover:not(:disabled) {
+    color: var(--gem-clip-fg);
+  }
+}
+
+/* Hinting the grip on hover moves the clip, so it stays out of the reduced-motion case. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .gem-clip[data-status='idle']:has(.gem-clip__clip--front:hover:not(:disabled):not(:active)) .gem-clip__clip {
+    transform: translateY(0.1em);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gem-clip:has(.gem-clip__clip--front:active) .gem-clip__clip,
+  .gem-clip__note,
+  .gem-clip:not([data-status='idle']) .gem-clip__note {
+    transform: none;
+  }
+
+  .gem-clip:not([data-status='idle']) .gem-clip__note {
+    transition: opacity 180ms ease;
+  }
+}

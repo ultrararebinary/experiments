@@ -17,6 +17,17 @@ The previews below are pictures. The components themselves are live on the [site
 
 <!-- experiments:start -->
 
+### [Gem Clip](https://ultrararebinary.github.io/experiments/#/gem-clip)
+
+<a href="https://ultrararebinary.github.io/experiments/#/gem-clip">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/readme/gem-clip-dark.png">
+    <img alt="Gem Clip, as it looks on the site" src="docs/readme/gem-clip-light.png">
+  </picture>
+</a>
+
+A paper clip that grips a block of text when you copy it, then lets go.
+
 ### [Shoji Bento](https://ultrararebinary.github.io/experiments/#/shoji-bento)
 
 <a href="https://ultrararebinary.github.io/experiments/#/shoji-bento">

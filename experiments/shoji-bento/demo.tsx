@@ -11,8 +11,8 @@ const items: ShojiItem[] = [
   {
     id: 'experiments',
     label: 'Experiments',
-    value: '4',
-    detail: 'Glossy Button, Color Drift, Color Bloom and this grid.',
+    value: '5',
+    detail: 'Glossy Button, Color Drift, Color Bloom, Gem Clip and this grid.',
     solid: true,
   },
   {
