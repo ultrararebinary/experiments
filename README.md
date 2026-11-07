@@ -17,6 +17,17 @@ The previews below are pictures. The components themselves are live on the [site
 
 <!-- experiments:start -->
 
+### [Die Cut](https://ultrararebinary.github.io/experiments/#/die-cut)
+
+<a href="https://ultrararebinary.github.io/experiments/#/die-cut">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/readme/die-cut-dark.png">
+    <img alt="Die Cut, as it looks on the site" src="docs/readme/die-cut-light.png">
+  </picture>
+</a>
+
+Eight die-cut stickers to use in place of flat icons. You can pick one up and throw it.
+
 ### [Gem Clip](https://ultrararebinary.github.io/experiments/#/gem-clip)
 
 <a href="https://ultrararebinary.github.io/experiments/#/gem-clip">

@@ -15,6 +15,7 @@ A public lab of small React UI components that anyone can copy, published at htt
 - Home and site redesign (2026-10-30, published): a personal note above the live components, one 640 px column, one text size, warm neutrals, Inter Variable. `src/transition.ts` handles page and theme changes with the View Transitions API.
 - `experiments/shoji-bento` (2026-10-30): a bento grid made of thin lines, in three sizes of 3, 5 and 7 compartments. Drag a line and the compartments make room, with type that follows its room. It is the `seam` version kept from three prototypes; `tray` and `dive` are gone.
 - `experiments/gem-clip` (2026-11-07): a copy control for a block of text. A paper clip on the top edge opens as it slides on, snaps shut on the block and holds while it says "Copied". Three sizes. Kept from two rounds of prototypes (first Lift, Clip and Tear, then the Pince, Glisse and Clac motions); the others are gone. The clip was drawn from a Codex image kept in `docs/references/gem-clip-paperclip.png`.
+- `experiments/die-cut` (2026-11-07): eight die-cut stickers (laptop, headphones, notebook, light bulb, paper clip, floppy disk, assistant bubble, coffee mug) in one `DieCut` component, `sm`/`md`/`lg` or any pixel size. `tilt` leans a sticker toward the mouse; `movable` lets you pick it up, throw it and drop it inside its parent. Each drawing came from a Codex image (`docs/references/sticker-*.png`) redrawn by hand as SVG, 1.5 to 3 KB each. Kept after three prototypes (Peel, Slap, Sheet) and a rework toward the motion of Stick It Up; the others are gone.
 - README with previews (2026-10-30): a hero picture and one picture per experiment in `docs/readme/`, in both themes, made by `npm run readme`. The list in `README.md` between the markers is generated; edit `demo.tsx` meta, not the list.
 - GitHub Actions workflow `.github/workflows/deploy.yml` (configure-pages, upload-pages-artifact, deploy-pages) on every push to `main`.
 
@@ -76,6 +77,18 @@ A public lab of small React UI components that anyone can copy, published at htt
 - Motion sampled with the page clock paused: the clip opens about 14% while it slides, is on in about 150 ms, closes with a ring that settles by 400 ms, and the block dips about 1.4 px. Letting go takes about 200 ms with no overshoot. Rapid clicks restart nothing; a click while it lets go grips again from where it is, at most about 3 px per frame.
 - Found and fixed during this check: `npm run readme` captured empty pictures for previews below the 2000 px view (Glossy Button, now fifth). The capture now passes `captureBeyondViewport`; the unchanged previews were left as they were.
 - Keyboard: Tab shows the ring, Enter puts the clip in place at once with no running animation. Disabled: default cursor, no copy. Reduced motion forced in the page: no travel, no spread, no dip, only the note fades. Both themes.
+
+## Verification of Die Cut (2026-11-07, local)
+
+- `npm run build` with type check: passes; the JS bundle is 494 KB (the prototypes had pushed it past the 500 KB warning). Dev and production build under `/experiments/`: home with Die Cut first, dragging a sticker on the home card moves it and opens nothing, the title opens the page, direct reload, copy button on both files (clipboard matched the code shown), zero console errors, both themes, no horizontal scroll at 375 px.
+- Motion sampled with the page clock paused: pick-up pops to 1.108 then 1.10 in about 100 ms; while dragged it follows 1:1 and leans with the speed (+4° to -3.7°); let go, it keeps sliding on its momentum, takes a new resting angle and squashes to 0.985 as it lands, settled by about 450 ms. A press without moving pops up and back. Held 58 px past the parent's edge while the pointer went much further, then slid back inside with a 4 px margin. Hover leans about 10.8° toward the corner under the mouse.
+- Every standalone SVG from `stickerSvg()` parses and draws on its own; no duplicate ids on the page with every sticker shown.
+- Keyboard: Tab shows the ring on a movable sticker, arrows move it 8 px with no frame queued. Reduced motion forced in the page: no hover lean, no pop, no lean, no throw; it follows the pointer and stays where dropped. Decorative stickers are `aria-hidden`; one with `label` is a named image.
+- vtracer was installed with `cargo install vtracer` for the SVG comparison (`cargo uninstall vtracer` removes it).
+
+## Published (2026-11-07)
+
+- Gem Clip pushed (8ddfd61) and live about 30 s later. Checked on the live site: home with Gem Clip first and Shoji Bento showing 5, the experiment page, a click that copies the right text with the same motion values as local, zero console errors. `gh` is not signed in on this machine, so the workflow run itself was not read; the live bundle was checked instead.
 
 ## Open
 

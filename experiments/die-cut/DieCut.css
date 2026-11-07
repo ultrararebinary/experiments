@@ -1,0 +1,29 @@
+.die-cut {
+  --die-cut-focus: light-dark(#21201c, #eeeeec);
+  display: inline-block;
+  flex-shrink: 0;
+  vertical-align: middle;
+  overflow: visible;
+  transform-origin: center;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* A movable sticker owns its drags: the page doesn't scroll or select text under it. */
+.die-cut[data-movable] {
+  position: relative;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  outline: none;
+}
+
+.die-cut[data-held] {
+  cursor: grabbing;
+}
+
+.die-cut[data-movable]:focus-visible {
+  outline: 2px solid var(--die-cut-focus);
+  outline-offset: 2px;
+  border-radius: 22%;
+}
