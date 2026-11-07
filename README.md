@@ -17,6 +17,17 @@ The previews below are pictures. The components themselves are live on the [site
 
 <!-- experiments:start -->
 
+### [Snooze Button](https://ultrararebinary.github.io/experiments/#/snooze-button)
+
+<a href="https://ultrararebinary.github.io/experiments/#/snooze-button">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/readme/snooze-button-dark.png">
+    <img alt="Snooze Button, as it looks on the site" src="docs/readme/snooze-button-light.png">
+  </picture>
+</a>
+
+A button with two sleepy eyes that open when your pointer comes near, and follow it.
+
 ### [Die Cut](https://ultrararebinary.github.io/experiments/#/die-cut)
 
 <a href="https://ultrararebinary.github.io/experiments/#/die-cut">

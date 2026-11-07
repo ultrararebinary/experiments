@@ -16,6 +16,7 @@ A public lab of small React UI components that anyone can copy, published at htt
 - `experiments/shoji-bento` (2026-10-30): a bento grid made of thin lines, in three sizes of 3, 5 and 7 compartments. Drag a line and the compartments make room, with type that follows its room. It is the `seam` version kept from three prototypes; `tray` and `dive` are gone.
 - `experiments/gem-clip` (2026-11-07): a copy control for a block of text. A paper clip on the top edge opens as it slides on, snaps shut on the block and holds while it says "Copied". Three sizes. Kept from two rounds of prototypes (first Lift, Clip and Tear, then the Pince, Glisse and Clac motions); the others are gone. The clip was drawn from a Codex image kept in `docs/references/gem-clip-paperclip.png`.
 - `experiments/die-cut` (2026-11-07): eight die-cut stickers (laptop, headphones, notebook, light bulb, paper clip, floppy disk, assistant bubble, coffee mug) in one `DieCut` component, `sm`/`md`/`lg` or any pixel size. `tilt` leans a sticker toward the mouse; `movable` lets you pick it up, throw it and drop it inside its parent. Each drawing came from a Codex image (`docs/references/sticker-*.png`) redrawn by hand as SVG, 1.5 to 3 KB each. Kept after three prototypes (Peel, Slap, Sheet) and a rework toward the motion of Stick It Up; the others are gone.
+- `experiments/snooze-button` (2026-11-07): a button with two sleepy eyes that open when the pointer comes within 120 px, follow it, squint on press, go round while `status="loading"` and smile on `status="success"`. Sizes `sm`/`md`/`lg`, tones `ink`/`paper`, `--accent`, eyes-only form. Rebuilt from a video, which stays out of the repo. Kept Ink from three prototypes (Ink, Peek, Line); its Codex states sheet is `docs/references/snooze-button-states.png`.
 - README with previews (2026-10-30): a hero picture and one picture per experiment in `docs/readme/`, in both themes, made by `npm run readme`. The list in `README.md` between the markers is generated; edit `demo.tsx` meta, not the list.
 - GitHub Actions workflow `.github/workflows/deploy.yml` (configure-pages, upload-pages-artifact, deploy-pages) on every push to `main`.
 
@@ -86,6 +87,13 @@ A public lab of small React UI components that anyone can copy, published at htt
 - Keyboard: Tab shows the ring on a movable sticker, arrows move it 8 px with no frame queued. Reduced motion forced in the page: no hover lean, no pop, no lean, no throw; it follows the pointer and stays where dropped. Decorative stickers are `aria-hidden`; one with `label` is a named image.
 - vtracer was installed with `cargo install vtracer` for the SVG comparison (`cargo uninstall vtracer` removes it).
 
+## Verification of Snooze Button (2026-11-07, local)
+
+- `npm run build` with type check: passes, with Vite's warning that the JS bundle is now 520 KB, over its 500 KB hint. Production build under `/experiments/`: home with Snooze Button first, title click, direct reload, unknown route, copy button (clipboard matched `SnoozeButton.tsx` byte for byte), no horizontal scroll at 320 px, zero console errors.
+- Motion measured in headless Chrome with a real mouse, sampled frame by frame: the eye opens in about 130 ms and the pupils settle in about 0.2 s without overshoot. The eyes start closing about 415 ms after the pointer leaves and are shut 250 ms later; coming back within that delay keeps them open. Press reaches 0.97 in about 50 ms with a quarter squint; release is back in about 140 ms. Six rapid clicks: at most 0.018 of scale per frame.
+- Keyboard: Tab opens the eyes with no transition, Enter animates nothing. Loading: `aria-busy`, `aria-disabled`, "Sending" then "Sent" in the status region, a second click ignored, pupils going round. Disabled: eyes shut, default cursor. Reduced motion emulated in Chrome: no tracking, no scale, the press darkens the fill. Touch emulated: the eyes open on the tap and close about 1 s later.
+- Both site themes and both tones checked on 3x captures. Found and fixed during the prototype: a white hairline around the half-closed eye (now the white is clipped instead of covered), white eyes lost on the pale pill (now a thin edge), and a dashed line on the disabled Peek.
+
 ## Published (2026-11-07)
 
 - Gem Clip pushed (8ddfd61) and live about 30 s later. Checked on the live site: home with Gem Clip first and Shoji Bento showing 5, the experiment page, a click that copies the right text with the same motion values as local, zero console errors. `gh` is not signed in on this machine, so the workflow run itself was not read; the live bundle was checked instead.
@@ -94,6 +102,8 @@ A public lab of small React UI components that anyone can copy, published at htt
 
 - Reduced motion was not tested with the real OS setting, and touch was not tested on a phone. This applies to all the experiments and to the site. Motion was measured with scripted pointer events and paused frames; how it feels by hand is for Yann to judge, ideally again the next day.
 - Not tested: the iOS swipe back, Alt+Left (the built-in browser doesn't send it), the press scale at normal speed (an instant synthetic click doesn't show it), the transition in Safari and Firefox.
+- The JS bundle crossed Vite's 500 KB hint with Snooze Button (520 KB). It still builds; code splitting per experiment would bring it back down.
+- Snooze Button: the reduced-motion fade and the feel by hand were not measured; no phone, Safari or Firefox test.
 - The first deploy after this change fills in `og.png` at its public address. Check the X preview then.
 
 ## Next

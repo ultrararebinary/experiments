@@ -1,0 +1,243 @@
+.snooze-button {
+  --snooze-button-h: 40px;
+  --snooze-button-ease: cubic-bezier(0.23, 1, 0.32, 1);
+  --snooze-button-white: #fbfbf9;
+  --snooze-button-black: #141413;
+
+  /* The pill. --accent, when set, replaces the fill. */
+  --snooze-button-ink: light-dark(#1c1c1b, #2c2c2a);
+  --snooze-button-paper: light-dark(#f3f2ee, #eeede9);
+  --snooze-button-bg: var(--accent, var(--snooze-button-ink));
+  --snooze-button-fg: #f6f5f2;
+  --snooze-button-ring: light-dark(rgb(0 0 0 / 0), rgb(255 255 255 / 0.1));
+
+  /* The eye, its edge, the pupil and the smile. */
+  --snooze-button-ball: var(--snooze-button-white);
+  --snooze-button-ball-edge: transparent;
+  --snooze-button-pupil: var(--snooze-button-black);
+  --snooze-button-smile: var(--snooze-button-white);
+
+  /* How much of each eye the lid covers, from the top: 0 open, 1 shut. */
+  --cover: 0.5;
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--snooze-button-h) * 0.3);
+  height: var(--snooze-button-h);
+  padding: 0 calc(var(--snooze-button-h) * 0.22) 0 calc(var(--snooze-button-h) * 0.45);
+  border: 0;
+  border-radius: 999px;
+  background: var(--snooze-button-bg);
+  color: var(--snooze-button-fg);
+  /* No soft shadow: one crisp edge underneath keeps it on the page. */
+  box-shadow:
+    inset 0 0 0 1px var(--snooze-button-ring),
+    0 1px 0 rgb(0 0 0 / 0.16);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: transform 160ms var(--snooze-button-ease);
+}
+
+.snooze-button[data-size='sm'] {
+  --snooze-button-h: 32px;
+  font-size: 0.8125rem;
+}
+
+.snooze-button[data-size='lg'] {
+  --snooze-button-h: 48px;
+  font-size: 1rem;
+}
+
+.snooze-button[data-tone='paper'] {
+  --snooze-button-bg: var(--accent, var(--snooze-button-paper));
+  --snooze-button-fg: #21201c;
+  --snooze-button-ring: light-dark(rgb(0 0 0 / 0.1), rgb(0 0 0 / 0));
+  /* White on a pale pill needs an edge to read as an eye. */
+  --snooze-button-ball-edge: rgb(0 0 0 / 0.16);
+  --snooze-button-smile: var(--snooze-button-black);
+}
+
+.snooze-button[data-icon] {
+  padding: 0 calc(var(--snooze-button-h) * 0.22);
+}
+
+.snooze-button:focus-visible {
+  outline: 2px solid light-dark(#21201c, #eeeeec);
+  outline-offset: 2px;
+}
+
+.snooze-button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+/* Pressing comes in fast; letting go is a little slower. */
+.snooze-button[data-pressed] {
+  transform: scale(0.97);
+  transition-duration: 100ms;
+}
+
+.snooze-button__label {
+  display: block;
+}
+
+.snooze-button__eyes {
+  position: relative;
+  display: flex;
+  gap: calc(var(--snooze-button-h) * 0.1);
+  flex: none;
+}
+
+.snooze-button__eye {
+  position: relative;
+  width: calc(var(--snooze-button-h) * 0.6);
+  height: calc(var(--snooze-button-h) * 0.6);
+}
+
+.snooze-button__ball {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 50%;
+  transition:
+    opacity 200ms var(--snooze-button-ease),
+    transform 200ms var(--snooze-button-ease);
+}
+
+/* Opening is quick; closing is lazier. */
+.snooze-button__white {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--snooze-button-ball);
+  box-shadow: inset 0 0 0 1px var(--snooze-button-ball-edge);
+  clip-path: inset(calc(var(--cover) * 100%) 0 0 0);
+  transition: clip-path 240ms ease;
+}
+
+.snooze-button__pupil {
+  position: absolute;
+  top: 30%;
+  left: 30%;
+  width: 40%;
+  height: 40%;
+  border-radius: 50%;
+  background: var(--snooze-button-pupil);
+  will-change: transform;
+}
+
+.snooze-button[data-lid='open'] {
+  --cover: 0;
+}
+
+.snooze-button[data-lid='squint'] {
+  --cover: 0.25;
+}
+
+.snooze-button[data-lid='closed'] {
+  --cover: 1;
+}
+
+.snooze-button[data-lid='open'] .snooze-button__white {
+  transition-duration: 150ms;
+  transition-timing-function: var(--snooze-button-ease);
+}
+
+.snooze-button[data-lid='squint'] .snooze-button__white {
+  transition-duration: 100ms;
+  transition-timing-function: var(--snooze-button-ease);
+}
+
+/* Shut eyes are two short lines. */
+.snooze-button__eye::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 12%;
+  right: 12%;
+  height: max(1.5px, calc(var(--snooze-button-h) * 0.05));
+  translate: 0 -50%;
+  border-radius: 1px;
+  background: var(--snooze-button-fg);
+  opacity: 0;
+}
+
+.snooze-button:disabled .snooze-button__eye::after {
+  opacity: 1;
+}
+
+/* Success: the eyes close into two happy arcs. */
+.snooze-button__smile {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: none;
+  stroke: var(--snooze-button-smile);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+  transform: translateY(12%);
+  transition:
+    opacity 200ms var(--snooze-button-ease),
+    transform 200ms var(--snooze-button-ease);
+}
+
+.snooze-button[data-status='success'] .snooze-button__ball {
+  opacity: 0;
+  transform: scaleY(0.4);
+}
+
+.snooze-button[data-status='success'] .snooze-button__smile {
+  opacity: 1;
+  transform: none;
+}
+
+/* Keyboard and reduced motion */
+
+.snooze-button[data-instant],
+.snooze-button[data-instant] * {
+  transition: none !important;
+}
+
+.snooze-button__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* No movement: the press darkens the pill, and the eyes change in place with a short fade. */
+  .snooze-button,
+  .snooze-button * {
+    transition: background-color 150ms ease, opacity 150ms ease !important;
+  }
+
+  .snooze-button[data-pressed] {
+    transform: none;
+    --snooze-button-bg: color-mix(in oklab, var(--accent, var(--snooze-button-ink)) 85%, black);
+  }
+
+  .snooze-button[data-tone='paper'][data-pressed] {
+    --snooze-button-bg: color-mix(in oklab, var(--accent, var(--snooze-button-paper)) 90%, black);
+  }
+
+  .snooze-button[data-status='success'] .snooze-button__ball,
+  .snooze-button__smile {
+    transform: none;
+  }
+}
