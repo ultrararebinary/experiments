@@ -17,6 +17,17 @@ The previews below are pictures. The components themselves are live on the [site
 
 <!-- experiments:start -->
 
+### [Pull Tab](https://ultrararebinary.github.io/experiments/#/pull-tab)
+
+<a href="https://ultrararebinary.github.io/experiments/#/pull-tab">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/readme/pull-tab-dark.png">
+    <img alt="Pull Tab, as it looks on the site" src="docs/readme/pull-tab-light.png">
+  </picture>
+</a>
+
+An accordion where each answer is a drawer. Click the question, or pull the tab underneath.
+
 ### [Snooze Button](https://ultrararebinary.github.io/experiments/#/snooze-button)
 
 <a href="https://ultrararebinary.github.io/experiments/#/snooze-button">

@@ -1,0 +1,154 @@
+.pull-tab {
+  /* Everything comes from the text color, so it fits any page and both themes. */
+  --pull-tab-line: color-mix(in oklab, currentColor 16%, transparent);
+  --pull-tab-line-strong: color-mix(in oklab, currentColor 42%, transparent);
+  --pull-tab-muted: color-mix(in oklab, currentColor 68%, transparent);
+  --pull-tab-ease: cubic-bezier(0.23, 1, 0.32, 1);
+  --pull-tab-font: 0.9375rem;
+  --pull-tab-pad: 14px;
+
+  width: 100%;
+  border-top: 1px solid var(--pull-tab-line);
+  font-size: var(--pull-tab-font);
+  line-height: 1.5;
+}
+
+.pull-tab[data-size='sm'] {
+  --pull-tab-font: 0.875rem;
+  --pull-tab-pad: 10px;
+}
+
+.pull-tab[data-size='lg'] {
+  --pull-tab-font: 1.0625rem;
+  --pull-tab-pad: 18px;
+}
+
+.pull-tab__item {
+  position: relative;
+  border-bottom: 1px solid var(--pull-tab-line);
+}
+
+/* Doubled class so the page's own heading styles don't reach the questions. */
+.pull-tab .pull-tab__heading {
+  margin: 0;
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+}
+
+/* The row is the front of the drawer: it sits above it, and the drawer slides out from under it. */
+.pull-tab__trigger {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  padding: var(--pull-tab-pad) 10px;
+  border: 0;
+  border-radius: 6px;
+  font: inherit;
+  font-weight: 500;
+  letter-spacing: inherit;
+  text-align: left;
+  color: inherit;
+  background: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 100ms ease-out;
+}
+
+.pull-tab__trigger:enabled:active {
+  opacity: 0.72;
+}
+
+.pull-tab__trigger:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -2px;
+}
+
+.pull-tab__trigger:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+/* Once the drawer shows, the front gets its crisp lower edge. */
+.pull-tab__item[data-visible] .pull-tab__trigger {
+  box-shadow: 0 1px 0 var(--pull-tab-line);
+}
+
+.pull-tab__panel {
+  overflow: clip;
+}
+
+.pull-tab__drawer {
+  padding: var(--pull-tab-pad) 10px;
+  color: var(--pull-tab-muted);
+  background: color-mix(in oklab, currentColor 3.5%, transparent);
+}
+
+.pull-tab__drawer > :first-child {
+  margin-top: 0;
+}
+
+.pull-tab__drawer > :last-child {
+  margin-bottom: 0;
+}
+
+/* The tab hangs below the row, or below the drawer once it is out. Its hit area is larger than
+   it looks. */
+.pull-tab__tab {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  z-index: 2;
+  width: 56px;
+  margin-left: -28px;
+  padding: 0 10px 10px;
+  cursor: grab;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.pull-tab__item[data-dragging] .pull-tab__tab {
+  cursor: grabbing;
+}
+
+.pull-tab__item[data-disabled] .pull-tab__tab {
+  display: none;
+}
+
+.pull-tab__tab-clip {
+  display: block;
+  height: 12px;
+  overflow: hidden;
+}
+
+/* Tucked halfway behind the line at rest; it peeks out on hover and comes all the way out in hand. */
+.pull-tab__tab-face {
+  display: block;
+  height: 12px;
+  border: 1px solid var(--pull-tab-line-strong);
+  border-top: 0;
+  border-radius: 0 0 8px 8px;
+  background: color-mix(in oklab, currentColor 5%, transparent);
+  transform: translateY(-5px);
+  transition: transform 150ms var(--pull-tab-ease);
+}
+
+.pull-tab__item[data-dragging] .pull-tab__tab-face {
+  transform: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pull-tab__item:has(.pull-tab__trigger:enabled:hover) .pull-tab__tab-face,
+  .pull-tab__tab:hover .pull-tab__tab-face {
+    transform: translateY(-1px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pull-tab__tab-face {
+    transition: none;
+  }
+}

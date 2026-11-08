@@ -1,6 +1,6 @@
 # State
 
-Last updated: 2026-11-07.
+Last updated: 2026-11-08.
 
 ## Goal
 
@@ -17,6 +17,7 @@ A public lab of small React UI components that anyone can copy, published at htt
 - `experiments/gem-clip` (2026-11-07): a copy control for a block of text. A paper clip on the top edge opens as it slides on, snaps shut on the block and holds while it says "Copied". Three sizes. Kept from two rounds of prototypes (first Lift, Clip and Tear, then the Pince, Glisse and Clac motions); the others are gone. The clip was drawn from a Codex image kept in `docs/references/gem-clip-paperclip.png`.
 - `experiments/die-cut` (2026-11-07): eight die-cut stickers (laptop, headphones, notebook, light bulb, paper clip, floppy disk, assistant bubble, coffee mug) in one `DieCut` component, `sm`/`md`/`lg` or any pixel size. `tilt` leans a sticker toward the mouse; `movable` lets you pick it up, throw it and drop it inside its parent. Each drawing came from a Codex image (`docs/references/sticker-*.png`) redrawn by hand as SVG, 1.5 to 3 KB each. Kept after three prototypes (Peel, Slap, Sheet) and a rework toward the motion of Stick It Up; the others are gone.
 - `experiments/snooze-button` (2026-11-07): a button with two sleepy eyes that open when the pointer comes within 120 px, follow it, squint on press, go round while `status="loading"` and smile on `status="success"`. Sizes `sm`/`md`/`lg`, tones `ink`/`paper`, `--accent`, eyes-only form. Rebuilt from a video, which stays out of the repo. Kept Ink from three prototypes (Ink, Peek, Line); its Codex states sheet is `docs/references/snooze-button-states.png`.
+- `experiments/pull-tab` (2026-11-08): an accordion where each answer is a drawer that slides out from under its question. A tab hangs under each row: pull it with a mouse or pen and let go, and the speed decides open or closed. Single or `multiple`, controlled or not, three sizes, `hidden="until-found"` for find in page, no color of its own. Kept Drawer from three prototypes (Fold, Drawer, Split); its Codex board is `docs/references/pull-tab-board.png`.
 - README with previews (2026-10-30): a hero picture and one picture per experiment in `docs/readme/`, in both themes, made by `npm run readme`. The list in `README.md` between the markers is generated; edit `demo.tsx` meta, not the list.
 - GitHub Actions workflow `.github/workflows/deploy.yml` (configure-pages, upload-pages-artifact, deploy-pages) on every push to `main`.
 
@@ -94,7 +95,18 @@ A public lab of small React UI components that anyone can copy, published at htt
 - Keyboard: Tab opens the eyes with no transition, Enter animates nothing. Loading: `aria-busy`, `aria-disabled`, "Sending" then "Sent" in the status region, a second click ignored, pupils going round. Disabled: eyes shut, default cursor. Reduced motion emulated in Chrome: no tracking, no scale, the press darkens the fill. Touch emulated: the eyes open on the tap and close about 1 s later.
 - Both site themes and both tones checked on 3x captures. Found and fixed during the prototype: a white hairline around the half-closed eye (now the white is clipped instead of covered), white eyes lost on the pale pill (now a thin edge), and a dashed line on the disabled Peek.
 
+## Verification of Pull Tab (2026-11-08, local)
+
+- `npm run build` with type check: passes, with Vite's 500 KB warning (the JS bundle is now 551 KB, from 520). Dev and production build under `/experiments/`: home with Pull Tab first, title click, direct reload, copy button (clipboard matched the code shown), no horizontal scroll at 320 px, zero console errors on the production build.
+- Motion measured in the built-in browser, frame by frame: opening reaches 95% in about 340 ms, closing in about 230 ms. A click that reverses an opening after 90 ms, then reopens it 60 ms later, and six clicks 30 ms apart: the height never jumps more than 7 px per frame.
+- Tab, with scripted pointer events and one real mouse drag: a 24 px flick opens, a 30 px flick up closes, a slow 20 px pull closes. Past the full height it resists and comes back.
+- Real keyboard: arrows, Home and End move between questions, Enter and Space open at once with no motion, focus ring visible. Disabled row: no opening, no tab. Whole accordion disabled.
+- Reduced motion forced in the page: no motion, 150 ms fade. The `beforematch` event (fired by hand) opens the right row. Both themes, hover zoomed: the tab peeks out 4 px.
+- Found and fixed during the prototype: `setPointerCapture` threw on a pointer that was already gone; the page's `h3` style leaked into the questions; the focus ring touched the text.
+
 ## Published (2026-11-07)
+
+- Snooze Button pushed (4b6f76b) and live within about 30 s. Checked on the live site: home with Snooze Button first, the experiment page with its 13 buttons, eyes at rest far from the pointer and open near it, zero console errors.
 
 - Gem Clip pushed (8ddfd61) and live about 30 s later. Checked on the live site: home with Gem Clip first and Shoji Bento showing 5, the experiment page, a click that copies the right text with the same motion values as local, zero console errors. `gh` is not signed in on this machine, so the workflow run itself was not read; the live bundle was checked instead.
 
@@ -102,7 +114,8 @@ A public lab of small React UI components that anyone can copy, published at htt
 
 - Reduced motion was not tested with the real OS setting, and touch was not tested on a phone. This applies to all the experiments and to the site. Motion was measured with scripted pointer events and paused frames; how it feels by hand is for Yann to judge, ideally again the next day.
 - Not tested: the iOS swipe back, Alt+Left (the built-in browser doesn't send it), the press scale at normal speed (an instant synthetic click doesn't show it), the transition in Safari and Firefox.
-- The JS bundle crossed Vite's 500 KB hint with Snooze Button (520 KB). It still builds; code splitting per experiment would bring it back down.
+- The JS bundle crossed Vite's 500 KB hint with Snooze Button (520 KB) and is 551 KB with Pull Tab. It still builds; code splitting per experiment would bring it back down.
+- Pull Tab: real find in page (Cmd+F) not tested, only the event it sends; the tab drag not felt by hand on a trackpad; no phone, Safari or Firefox test.
 - Snooze Button: the reduced-motion fade and the feel by hand were not measured; no phone, Safari or Firefox test.
 - The first deploy after this change fills in `og.png` at its public address. Check the X preview then.
 
