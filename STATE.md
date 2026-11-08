@@ -104,6 +104,10 @@ A public lab of small React UI components that anyone can copy, published at htt
 - Reduced motion forced in the page: no motion, 150 ms fade. The `beforematch` event (fired by hand) opens the right row. Both themes, hover zoomed: the tab peeks out 4 px.
 - Found and fixed during the prototype: `setPointerCapture` threw on a pointer that was already gone; the page's `h3` style leaked into the questions; the focus ring touched the text.
 
+## Published (2026-11-08)
+
+- Pull Tab pushed (1840aa4) and live within about a minute. Checked on the live site: the experiment page with its 22 rows, a click that opens a row to its full height, zero console errors. The workflow run itself was not read.
+
 ## Published (2026-11-07)
 
 - Snooze Button pushed (4b6f76b) and live within about 30 s. Checked on the live site: home with Snooze Button first, the experiment page with its 13 buttons, eyes at rest far from the pointer and open near it, zero console errors.
