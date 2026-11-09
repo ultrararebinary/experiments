@@ -10,6 +10,7 @@ Talk to Yann in French. Code, comments and everything published in the repo stay
 - `experiments/<name>/` holds exactly four files: `<Name>.tsx`, `<Name>.css`, `demo.tsx`, `README.md`. No fifth file, no shared helpers imported from elsewhere. A component must work after copying its `.tsx` and `.css` into another project.
 - `demo.tsx` exports `meta` (`title`, `description`, `date` as `YYYY-MM-DD`, and an optional `order` when an experiment must come before another of the same day), `Preview` (shown live on the home card) and a default `Demo` (every variant). Layout helpers for demos (`.demo`, `.demo__row`, `.demo__section`, `.demo__hint`) live in `src/styles.css`.
 - Components render real, accessible elements, accept native props, and use no Tailwind. Motion or GSAP only if an experiment really needs it.
+- A component that renders headings resets their font, margin and color with a doubled class (`.x .x__heading`), because page styles such as `.demo__section h3` otherwise reach them.
 - `STATE.md` tracks where the project stands. Update it at each milestone.
 
 ## References
@@ -31,5 +32,5 @@ When Yann asks for `/prototype`, build three versions behind the picker, check t
 3. Check every state in every variant, on both the dark and light themes: hover, press, keyboard focus (Tab), disabled, any options, and `prefers-reduced-motion`. Look at zoomed captures of the hover state, because reading computed styles can miss a visual problem. A screenshot does not prove an animation: measure transforms at several moments, and test interrupted and rapid interactions.
 4. The console shows zero errors.
 5. `npm run build && npm run preview` serves the build under `/experiments/`, as GitHub Pages does. Check it there too.
-6. After adding or changing an experiment, run `npm run readme`: it rebuilds the previews in `docs/readme/` and the list in `README.md` from each `demo.tsx` `meta`. Look at the new pictures, and commit them with the change. The script only knows how to show a preview at rest; one that must be pressed to make sense needs an entry in `HOLD` in `scripts/readme.mjs`.
+6. After adding or changing an experiment, run `npm run readme`: it rebuilds the previews in `docs/readme/` and the list in `README.md` from each `demo.tsx` `meta`. Look at the new pictures, and commit them with the change. The script only knows how to show a preview at rest; one that must be pressed to make sense needs an entry in `HOLD` in `scripts/readme.mjs`. The script recaptures every preview: restore the pictures of experiments that didn't change (`git checkout -- docs/readme/<name>-*.png`) and commit only the new ones and the hero.
 7. Nothing goes online without a push to `main`, and nothing is pushed without Yann's go-ahead.
