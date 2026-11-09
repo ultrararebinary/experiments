@@ -121,6 +121,10 @@ A full review of the home page, the page change and the experiment page template
 
 Checked: `npm run build` passes with no size warning. Dev server and production build under `/experiments/`, both themes: all eight pages opened and closed, zero console errors or warnings. Copy: clipboard matched the code shown; forced failure showed "Couldn't copy" with no uncaught error. Tabs by keyboard: Right selects and focuses the next file and wraps, Tab goes to Copy then into the code. Placeholder held 525 px while the code arrived (slowed on purpose); a blocked load showed the message. Direct reload of `#/pull-tab`, unknown route. Snooze preview: "Saving" then "Saved" then back, with no page change. Page transition re-measured: same 300 ms path; six interrupted back and forward sequences leave no stuck name and the next transition plays. Reduced motion (emulated in Chrome): fades only. With a 4x slower CPU on a 390 px phone view: first paint 600 ms (was 632), blocking time 89 ms (was 142), click to first transition frame 134 to 155 ms (was 172 to 245). Captures at 320, 390 and 1440 px in both themes, focus rings zoomed. README pictures redone for Shoji Bento, Snooze Button, Glossy Button and the hero; the others were restored.
 
+## Published (2026-11-09)
+
+- Home review fixes pushed (9f7c320). The push run built fine but its deploy job never started: GitHub answered "Internal server error" during an Actions outage, and the run could not be retried. A manual run of the same workflow on the same commit (workflow_dispatch) deployed it. Checked on the live site: the new bundle and `og.png` are served, 8 articles on the home with Shoji Bento showing 8 and the Snooze preview reading "Save changes", all eight pages load their code tabs, a direct reload of `#/gem-clip` and its copy button (clipboard matched), zero console errors. The X card itself was not looked at.
+
 ## Published (2026-11-08)
 
 - Pull Tab pushed (1840aa4) and live within about a minute. Checked on the live site: the experiment page with its 22 rows, a click that opens a row to its full height, zero console errors. The workflow run itself was not read.
@@ -137,7 +141,7 @@ Checked: `npm run build` passes with no size warning. Dev server and production 
 - Not tested: the iOS swipe back, Alt+Left (the built-in browser doesn't send it), the press scale at normal speed (an instant synthetic click doesn't show it), the transition in Safari and Firefox.
 - Pull Tab: real find in page (Cmd+F) not tested, only the event it sends; the tab drag not felt by hand on a trackpad; no phone, Safari or Firefox test.
 - Snooze Button: the reduced-motion fade and the feel by hand were not measured; no phone, Safari or Firefox test.
-- `og.png` was regenerated on 2026-11-09 but not yet seen as a card on X: check it after the next deploy.
+- `og.png` is live since 2026-11-09 but was not yet seen as a card on X. X may keep showing the old card for a while after an image changes.
 - Left open by the 2026-11-09 review, for Yann to decide: a one-line hint in the Color Bloom and Color Drift stages (they show nothing at rest); a "Code" link at the top of experiment pages (the code starts 1.3 to 2.4 phone screens down); replacing "around 8 to 10 experiments" for the infinite grid with measured thresholds (about 8 phone screens or 40 Tab stops, reached around 13 to 15 experiments). The new headings, copy status and tabs were not heard with a real screen reader.
 - Not tested: a visitor who keeps the page open across a deploy, then opens an experiment. The old code files are gone by then. The page should show "Couldn't load the code" or be reloaded by the stale-index script in `index.html`, but neither was simulated.
 
