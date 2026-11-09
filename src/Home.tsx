@@ -42,23 +42,27 @@ export function Home() {
       <ul className="list">
         {experiments.map(({ slug, title, description, date, Preview }) => (
           <li key={slug}>
-            <div className="stage stage--preview" data-stage={slug}>
-              <Preview />
-            </div>
-            <div className="entry__row" onClick={openEntry(slug)}>
-              <div className="entry__head">
-                <span>
-                  <a className="entry__title" href={`#/${slug}`}>
-                    {title}
-                  </a>
-                  <span className="entry__arrow" aria-hidden="true">→</span>
-                </span>
-                <time className="entry__date" dateTime={date}>
-                  {formatDate(date)}
-                </time>
+            {/* The article carries the experiment's name, so a screen reader announces it before the
+                controls of the preview, and the h2 lets it jump from one experiment to the next. */}
+            <article aria-labelledby={`${slug}-name`}>
+              <div className="stage stage--preview" data-stage={slug}>
+                <Preview />
               </div>
-              <p className="entry__text">{description}</p>
-            </div>
+              <div className="entry__row" onClick={openEntry(slug)}>
+                <div className="entry__head">
+                  <h2 className="entry__name" id={`${slug}-name`}>
+                    <a className="entry__title" href={`#/${slug}`}>
+                      {title}
+                    </a>
+                    <span className="entry__arrow" aria-hidden="true">→</span>
+                  </h2>
+                  <time className="entry__date" dateTime={date}>
+                    {formatDate(date)}
+                  </time>
+                </div>
+                <p className="entry__text">{description}</p>
+              </div>
+            </article>
           </li>
         ))}
       </ul>

@@ -1,4 +1,4 @@
-# Glossy button
+# Glossy Button
 
 A raised, glossy button in three variants:
 

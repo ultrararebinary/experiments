@@ -7,23 +7,28 @@ export const meta = {
   order: 1,
 }
 
+// Vite lists the experiment folders when it builds the site, so this count never goes stale.
+// It counts READMEs because a glob never lists the file that runs it, so demo.tsx would miss this
+// one. Only the keys are read: nothing is loaded through this list.
+const experimentCount = Object.keys(import.meta.glob('../*/README.md', { query: '?raw' })).length
+
 const items: ShojiItem[] = [
   {
     id: 'experiments',
     label: 'Experiments',
-    value: '5',
-    detail: 'Glossy Button, Color Drift, Color Bloom, Gem Clip and this grid.',
+    value: String(experimentCount),
+    detail: 'One folder each: the component, its CSS, a demo and a few notes.',
     solid: true,
   },
   {
     id: 'files',
-    label: 'Files to copy',
+    label: 'Files',
     value: '2',
     detail: 'One .tsx and one .css, side by side in your project.',
   },
   {
     id: 'packages',
-    label: 'Packages to install',
+    label: 'Dependencies',
     value: '0',
     detail: 'A component here needs React and nothing else.',
   },
@@ -59,8 +64,9 @@ const sizes = [
   { size: 'lg', title: 'Seven compartments' },
 ] as const
 
+// The small size keeps the home preview inside the same 300 px stage as the others.
 export function Preview() {
-  return <ShojiBento items={items} aria-label="Shoji Bento" />
+  return <ShojiBento size="sm" items={items} aria-label="Shoji Bento" />
 }
 
 export default function Demo() {

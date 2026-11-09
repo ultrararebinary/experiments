@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react'
 import { GlossyButton, type GlossyButtonProps } from './GlossyButton'
 
 export const meta = {
-  title: 'Glossy button',
+  title: 'Glossy Button',
   description: 'A raised button lit from above, in three variants. One accent color drives the gradient and rim.',
   date: '2026-10-29',
 }
@@ -30,8 +30,8 @@ const variants: { variant: NonNullable<GlossyButtonProps['variant']>; title: str
 
 export function Preview() {
   return (
-    <GlossyButton size="lg" trailing={<><s>$40</s> $24</>}>
-      Get the starter pack
+    <GlossyButton size="lg" trailing="2 files">
+      Get the code
     </GlossyButton>
   )
 }

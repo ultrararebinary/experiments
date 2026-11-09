@@ -1,4 +1,5 @@
-// Rebuilds the experiment previews in docs/readme/ and the list between the markers in README.md.
+// Rebuilds the experiment previews in docs/readme/, the list between the markers in README.md and
+// the picture shown when the site is shared (public/og.png).
 // Run it with `npm run readme`, which builds the site first. It drives Chrome through the
 // DevTools protocol, so it needs no dependency: Node 22 or newer and a Chrome install.
 import { spawn } from 'node:child_process'
@@ -20,6 +21,12 @@ const CHROME =
 const HOLD = { 'color-bloom': '.cb__dot' }
 
 const VIEW = { width: 760, height: 2000 }
+
+// The shared picture: four previews that read well at rest, in the site's dark theme. A card on X
+// is about 500 px wide, too small for the note, and X prints the page title under it anyway.
+// 800 x 420 at 1.5x gives the 1200 x 630 that X and others expect.
+const OG = ['snooze-button', 'die-cut', 'color-drift', 'glossy-button']
+const OG_VIEW = { width: 800, height: 420, deviceScaleFactor: 1.5 }
 const THEMES = ['light', 'dark']
 const START = '<!-- experiments:start -->'
 const END = '<!-- experiments:end -->'
@@ -164,6 +171,36 @@ async function capture(page, experiments, outDir) {
   }
 }
 
+async function captureOg(page, experiments, file) {
+  const slugs = OG.filter((slug) => experiments.some((e) => e.slug === slug))
+  if (slugs.length < 4) throw new Error(`OG lists ${OG.length} previews but only ${slugs.length} exist`)
+  await page.send('Emulation.setDeviceMetricsOverride', { ...OG_VIEW, mobile: false })
+  await page.send('Page.navigate', { url: `http://127.0.0.1:${SITE_PORT}/experiments/` })
+  await page.evaluate(`localStorage.setItem('theme', 'dark')`).catch(() => {})
+  await page.send('Page.navigate', { url: `http://127.0.0.1:${SITE_PORT}/experiments/` })
+  for (let i = 0; i < 100; i++) {
+    if (await page.evaluate(`document.querySelector('[data-stage]') !== null`).catch(() => false)) break
+    await sleep(100)
+  }
+  await page.evaluate(`document.fonts.ready.then(() => true)`)
+  await sleep(900)
+  // Only the four live stages stay, two by two, as the site draws them. Nothing is drawn by hand.
+  const keep = slugs.map((slug) => `li:has([data-stage="${slug}"])`).join(', ')
+  await page.evaluate(`(() => {
+    const style = document.createElement('style')
+    style.textContent = \`
+      .page { max-width: none; padding: 20px; }
+      .page__title, .note, .links, .entry__row { display: none; }
+      .list { grid-template-columns: 1fr 1fr; gap: 12px; margin: 0; }
+      .list > li:not(${keep}) { display: none; }
+      .stage--preview { min-height: 0; height: 184px; padding: 0; overflow: clip; }
+    \`
+    document.head.append(style)
+  })()`)
+  await sleep(300)
+  await png(page, { x: 0, y: 0, width: OG_VIEW.width, height: OG_VIEW.height }, file)
+}
+
 function listMarkdown(experiments) {
   return experiments
     .map(({ slug, title, description }) => {
@@ -223,8 +260,9 @@ try {
   await waitForHttp(`http://127.0.0.1:${SITE_PORT}/experiments/`)
   page = await connect()
   await capture(page, experiments, outDir)
+  await captureOg(page, experiments, join(ROOT, 'public', 'og.png'))
   await updateReadme(experiments)
-  console.log(`Updated ${experiments.length} previews and the list in README.md`)
+  console.log(`Updated ${experiments.length} previews, the list in README.md and public/og.png`)
 } finally {
   page?.close()
   chrome.kill()

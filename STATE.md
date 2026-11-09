@@ -1,6 +1,6 @@
 # State
 
-Last updated: 2026-11-08.
+Last updated: 2026-11-09.
 
 ## Goal
 
@@ -9,6 +9,7 @@ A public lab of small React UI components that anyone can copy, published at htt
 ## What exists
 
 - Gallery app (Vite 8, React 19, TypeScript 7, plain CSS) with a home grid of live previews and one page per experiment: all variants, code tabs with a copy button, README notes.
+- Since the home review of 2026-11-09, the code tabs and the notes load only when an experiment page opens (`loadDetails` in `src/experiments.ts`, with `marked` imported on demand). The demos still load with the site, because the page transition needs the demo area at once. The main JS file went from 551 KB to 319 KB (98 KB gzip).
 - Hash routing (`#/glossy-button`): GitHub Pages always serves `index.html`, so a direct reload of an experiment page works with no 404 trick.
 - `experiments/glossy-button`: sizes `sm`/`md`/`lg`, tones `blue`/`violet`/`green`/`neutral`, any color through `--accent` (gradient and rim mixed with `color-mix()`; neutral base, one crisp edge, no soft shadow), optional `trailing` slot, three variants (`key` keycap by default, `light` with a cursor-following light, `key-light` with both and a softer light), press driven by a small hand-written spring, focus ring, disabled state, reduced motion, optional `shine`.
 - `experiments/color-drift` and `experiments/color-bloom` (2026-10-30): two color pickers, each in `sm`/`md`/`lg`, picked in OKLCH, returning a hex string. They replace the three-version `color-picker` from commit 9e15c9a; Tuner and the `/prototype` picker are gone.
@@ -19,6 +20,7 @@ A public lab of small React UI components that anyone can copy, published at htt
 - `experiments/snooze-button` (2026-11-07): a button with two sleepy eyes that open when the pointer comes within 120 px, follow it, squint on press, go round while `status="loading"` and smile on `status="success"`. Sizes `sm`/`md`/`lg`, tones `ink`/`paper`, `--accent`, eyes-only form. Rebuilt from a video, which stays out of the repo. Kept Ink from three prototypes (Ink, Peek, Line); its Codex states sheet is `docs/references/snooze-button-states.png`.
 - `experiments/pull-tab` (2026-11-08): an accordion where each answer is a drawer that slides out from under its question. A tab hangs under each row: pull it with a mouse or pen and let go, and the speed decides open or closed. Single or `multiple`, controlled or not, three sizes, `hidden="until-found"` for find in page, no color of its own. Kept Drawer from three prototypes (Fold, Drawer, Split); its Codex board is `docs/references/pull-tab-board.png`.
 - README with previews (2026-10-30): a hero picture and one picture per experiment in `docs/readme/`, in both themes, made by `npm run readme`. The list in `README.md` between the markers is generated; edit `demo.tsx` meta, not the list.
+- `public/og.png`, the picture shown when the site is shared, is made by `npm run readme` too: four live previews (Snooze Button, Die Cut, Color Drift, Glossy Button, listed in `OG` in `scripts/readme.mjs`) two by two in the dark theme, 1200 x 630. No note text, because an X card is about 500 px wide and prints the page title itself.
 - GitHub Actions workflow `.github/workflows/deploy.yml` (configure-pages, upload-pages-artifact, deploy-pages) on every push to `main`.
 
 ## Key choices
@@ -104,6 +106,21 @@ A public lab of small React UI components that anyone can copy, published at htt
 - Reduced motion forced in the page: no motion, 150 ms fade. The `beforematch` event (fired by hand) opens the right row. Both themes, hover zoomed: the tab peeks out 4 px.
 - Found and fixed during the prototype: `setPointerCapture` threw on a pointer that was already gone; the page's `h3` style leaked into the questions; the focus ring touched the text.
 
+## Home review (2026-11-09, local)
+
+A full review of the home page, the page change and the experiment page template, asked by Yann. The report, the captures and Codex's critique live outside the repo, in Yann's AIOS folder (`reviews/experiments-accueil-2026-11-09/`). Yann chose the fixes below; nothing is committed.
+
+- The Shoji Bento demo counts the experiments at build time (`import.meta.glob` on the READMEs, keys only) instead of a hand-written "5". Its home preview uses the small size, so its stage is 300 px like the others, and its labels are short enough not to be cut ("Files", "Dependencies").
+- Each home entry is an `article` named by an `h2` (same look as before), so a screen reader announces the experiment before its preview's controls and can jump between experiments.
+- Copy button: a failed clipboard write now says "Couldn't copy" instead of failing silently, and a hidden `role="status"` region announces the result. The button keeps one width for its three labels.
+- Code tabs follow the WAI-ARIA tabs pattern: one Tab stop, arrows, Home and End, a `tabpanel` linked to its tab. The code block is focusable, so it scrolls with the keyboard in every browser. Focus rings on tabs and code sit inside, because their containers clip.
+- Code and notes load on demand (see above), with a 525 px placeholder so nothing jumps, and a message if the load fails.
+- Home previews: Snooze Button now reads "Save changes" and shows its loading and success states on click ("Get in touch" did nothing, and looked like a way to reach Yann). Glossy Button reads "Get the code · 2 files" instead of a made-up discount. "Glossy button" became "Glossy Button".
+- The note's lines stop at 36em (about 72 characters, from 90) inside the same 640 px column. Preview stages have 16 px of side padding on phones, 8 px only below 360 px.
+- `og.png` regenerated (see above), with `og:image:width`, `og:image:height` and `og:image:alt`.
+
+Checked: `npm run build` passes with no size warning. Dev server and production build under `/experiments/`, both themes: all eight pages opened and closed, zero console errors or warnings. Copy: clipboard matched the code shown; forced failure showed "Couldn't copy" with no uncaught error. Tabs by keyboard: Right selects and focuses the next file and wraps, Tab goes to Copy then into the code. Placeholder held 525 px while the code arrived (slowed on purpose); a blocked load showed the message. Direct reload of `#/pull-tab`, unknown route. Snooze preview: "Saving" then "Saved" then back, with no page change. Page transition re-measured: same 300 ms path; six interrupted back and forward sequences leave no stuck name and the next transition plays. Reduced motion (emulated in Chrome): fades only. With a 4x slower CPU on a 390 px phone view: first paint 600 ms (was 632), blocking time 89 ms (was 142), click to first transition frame 134 to 155 ms (was 172 to 245). Captures at 320, 390 and 1440 px in both themes, focus rings zoomed. README pictures redone for Shoji Bento, Snooze Button, Glossy Button and the hero; the others were restored.
+
 ## Published (2026-11-08)
 
 - Pull Tab pushed (1840aa4) and live within about a minute. Checked on the live site: the experiment page with its 22 rows, a click that opens a row to its full height, zero console errors. The workflow run itself was not read.
@@ -118,10 +135,11 @@ A public lab of small React UI components that anyone can copy, published at htt
 
 - Reduced motion was not tested with the real OS setting, and touch was not tested on a phone. This applies to all the experiments and to the site. Motion was measured with scripted pointer events and paused frames; how it feels by hand is for Yann to judge, ideally again the next day.
 - Not tested: the iOS swipe back, Alt+Left (the built-in browser doesn't send it), the press scale at normal speed (an instant synthetic click doesn't show it), the transition in Safari and Firefox.
-- The JS bundle crossed Vite's 500 KB hint with Snooze Button (520 KB) and is 551 KB with Pull Tab. It still builds; code splitting per experiment would bring it back down.
 - Pull Tab: real find in page (Cmd+F) not tested, only the event it sends; the tab drag not felt by hand on a trackpad; no phone, Safari or Firefox test.
 - Snooze Button: the reduced-motion fade and the feel by hand were not measured; no phone, Safari or Firefox test.
-- The first deploy after this change fills in `og.png` at its public address. Check the X preview then.
+- `og.png` was regenerated on 2026-11-09 but not yet seen as a card on X: check it after the next deploy.
+- Left open by the 2026-11-09 review, for Yann to decide: a one-line hint in the Color Bloom and Color Drift stages (they show nothing at rest); a "Code" link at the top of experiment pages (the code starts 1.3 to 2.4 phone screens down); replacing "around 8 to 10 experiments" for the infinite grid with measured thresholds (about 8 phone screens or 40 Tab stops, reached around 13 to 15 experiments). The new headings, copy status and tabs were not heard with a real screen reader.
+- Not tested: a visitor who keeps the page open across a deploy, then opens an experiment. The old code files are gone by then. The page should show "Couldn't load the code" or be reloaded by the stale-index script in `index.html`, but neither was simulated.
 
 ## Next
 

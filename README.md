@@ -94,12 +94,12 @@ A color picker that is only a dot until you press it. Petals unfurl, you slide t
 
 A color picker with nothing on it. Drag the color itself, and the new shade spreads out from your finger like ink.
 
-### [Glossy button](https://ultrararebinary.github.io/experiments/#/glossy-button)
+### [Glossy Button](https://ultrararebinary.github.io/experiments/#/glossy-button)
 
 <a href="https://ultrararebinary.github.io/experiments/#/glossy-button">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/readme/glossy-button-dark.png">
-    <img alt="Glossy button, as it looks on the site" src="docs/readme/glossy-button-light.png">
+    <img alt="Glossy Button, as it looks on the site" src="docs/readme/glossy-button-light.png">
   </picture>
 </a>
 

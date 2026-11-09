@@ -15,10 +15,10 @@ function SendButton(props: SnoozeButtonProps) {
   useEffect(() => () => timers.current.forEach(clearTimeout), [])
   return (
     <SnoozeButton
-      {...props}
-      status={status}
       loadingLabel="Sending"
       successLabel="Sent"
+      {...props}
+      status={status}
       onClick={() => {
         timers.current.forEach(clearTimeout)
         setStatus('loading')
@@ -31,8 +31,14 @@ function SendButton(props: SnoozeButtonProps) {
   )
 }
 
+// On the home page a click shows the other states. The label promises nothing a visitor might
+// take for a real way to reach the author.
 export function Preview() {
-  return <SnoozeButton>Get in touch</SnoozeButton>
+  return (
+    <SendButton loadingLabel="Saving" successLabel="Saved">
+      Save changes
+    </SendButton>
+  )
 }
 
 export default function Demo() {

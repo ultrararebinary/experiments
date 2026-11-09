@@ -92,6 +92,16 @@ main:focus {
   outline: none;
 }
 
+/* Read by screen readers, not shown. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 .page {
   max-width: 688px;
   margin: 0 auto;
@@ -141,6 +151,8 @@ main:focus {
 /* Home note */
 
 .note p {
+  /* About 72 characters a line: past 75, the eye loses the start of the next one. */
+  max-width: 36em;
   margin: 12px 0 0;
   color: var(--muted);
 }
@@ -201,6 +213,12 @@ main:focus {
   align-items: baseline;
   justify-content: space-between;
   gap: 16px;
+}
+
+.entry__name {
+  margin: 0;
+  font: inherit;
+  letter-spacing: inherit;
 }
 
 .entry__title {
@@ -329,6 +347,29 @@ main:focus {
   font-size: 0.8125rem;
   line-height: 1.6;
   tab-size: 2;
+}
+
+/* Both rings sit inside: the tab list scrolls sideways and .code clips its rounded corners, so a
+   ring outside would be cut. */
+.code__tab:focus-visible {
+  outline-offset: -2px;
+  border-radius: 7px;
+}
+
+.code__body:focus-visible {
+  outline-offset: -2px;
+  border-radius: 0 0 12px 12px;
+}
+
+/* The bar (45 px) plus the code at its full 480 px: most files are taller than that. */
+.code--loading {
+  height: 525px;
+}
+
+.code--message {
+  margin: 0;
+  padding: 16px;
+  color: var(--muted);
 }
 
 .notes h2,
@@ -575,10 +616,17 @@ main:focus {
   }
 
   .stage--preview {
-    padding-inline: 8px;
+    padding-inline: 16px;
   }
 
   .stage--demo {
     padding: 20px 16px;
+  }
+}
+
+/* Below 360 px, the widest previews only fit with a narrow side padding. */
+@media (max-width: 359px) {
+  .stage--preview {
+    padding-inline: 8px;
   }
 }
